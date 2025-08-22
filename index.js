@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://giaqui1712:EDrFE61LVcnODHpT@cluster0.otsxhah.mongodb.net/tambeautie-spa');
+require('dotenv').config();
+mongoose.connect(process.env.DATABASE);
 
 const Blog = mongoose.model('Blog', {
     name: String
