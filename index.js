@@ -1,13 +1,14 @@
 const express = require('express');
 const path = require('path');
-const mongoose = require('mongoose');
 require('dotenv').config();
-mongoose.connect(process.env.DATABASE);
-
+const database = require('./config/database');
 const clientRoutes = require('./routes/client/index.route');
 
 const app = express();
 const port = 3000;
+
+// Connect to the database
+database.connect();
 
 //Set up Views
 app.set('views', path.join(__dirname, 'views'));
