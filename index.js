@@ -1,9 +1,19 @@
 const express = require('express');
+const path = require('path');
+
 const app = express();
 const port = 3000;
 
+//Set up Views
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
 app.get('/', (req, res) => {
-    res.send('Trang Chủ');
+    res.render("client/pages/home")
+})
+
+app.get('/blogs', (req, res) => {
+    res.render("client/pages/blog-list")
 })
 
 app.listen(port, () => {
