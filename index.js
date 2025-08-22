@@ -8,6 +8,9 @@ const port = 3000;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+//Set up Static Files
+app.use(express.static(path.join(__dirname, "public")));
+
 app.get('/', (req, res) => {
     res.render("client/pages/home")
 })
