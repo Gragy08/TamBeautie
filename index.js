@@ -4,9 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 mongoose.connect(process.env.DATABASE);
 
-const Blog = mongoose.model('Blog', {
-    name: String
-});
+const clientRoutes = require('./routes/client/index.route');
 
 const app = express();
 const port = 3000;
@@ -18,13 +16,8 @@ app.set('view engine', 'pug');
 //Set up Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/', (req, res) => {
-    res.render("client/pages/home")
-})
-
-app.get('/blogs', (req, res) => {
-    res.render("client/pages/blog-list")
-})
+//Set up links to client routes
+app.use('/', clientRoutes);
 
 app.listen(port, () => {
     console.log(`TamBeautie app listening at http://localhost:${port}`);
