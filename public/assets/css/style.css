@@ -242,3 +242,82 @@ body {
   background: #f5b5c5;
   color: #f5f5f5; /* chữ tối để nổi bật */
 }
+
+/* Section 2 */
+.section2 {
+  height: 100vh;          /* Chiều cao = 1 viewport (màn hình) */
+  display: flex;          /* Căn giữa nội dung */
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #fff, #fff6f9); /* nền hồng đen */
+  color: #fff;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.section2 .container {
+    display: flex;
+    flex-direction: column;
+}
+
+.section-title {
+  position: relative;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-title .background-text {
+  font-size: 80px;          /* chữ lớn */
+  font-weight: 700;
+  color: rgba(245, 157, 195, 0.2); /* hồng pastel nhạt mờ (#F59DC3 chuyển thành trong suốt) */
+  letter-spacing: 15px;
+}
+
+.section-title .small-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Great Vibes', cursive;  /* style mềm mại */
+  font-size: 48px;
+  color: #AD1457; /* hồng đậm hơn để nổi bật */
+  white-space: nowrap;
+}
+
+.section-title .small-title::before,
+.section-title .small-title::after {
+  content: "";
+  display: inline-block;
+  width: 40px;
+  height: 2px;
+  background: #F59DC3;  /* thanh ngang màu hồng pastel */
+  margin: 0 15px;
+  vertical-align: middle;
+}
+
+.section2 .desc {
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 35px;
+  line-height: 1.8;
+  color: #AD1457;
+  font-weight: 300;
+}
+
+.section2 .btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: #FDE7F1;
+  border: 2px solid #FDE7F1;
+  color: #AD1457;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 20px;
+}
+
+.section2 .btn:hover {
+  background: #F59DC3;
+  color: #fff;
+}
