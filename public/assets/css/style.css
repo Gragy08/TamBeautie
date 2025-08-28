@@ -210,6 +210,20 @@ body {
     cursor: pointer;
     z-index: 700;
     color: #F59DC3;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 592px) {
+  .btn-book {
+    display: none;
+  }
+  .phone-book {
+    display: block;
+    font-size: 20px;
+    color: #F59DC3;
+    text-decoration: none;
+    margin-left: 15px;
   }
 }
 
