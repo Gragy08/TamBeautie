@@ -354,6 +354,32 @@ body {
   margin-top: 0px;
 }
 
+@media (max-width: 768px) {
+  .section1 .content {
+    padding: 0 20px;
+  }
+  .section1 h2 {
+    font-size: 48px;
+  }
+  .section1 .btn {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 592px) {
+  .section1 {
+    background: url("/assets/images/section1-bg5.jpg") no-repeat center center/cover;
+  }
+  .section1 h2 {
+    font-size: 36px;
+  }
+  .section1 .btn {
+    padding: 10px 25px;
+    font-size: 14px;
+  }
+}
+
 /* Tiêu đề mềm mại */
 .section1 h2 {
   font-family: 'Great Vibes', cursive; /* hoặc thử 'Dancing Script' */
