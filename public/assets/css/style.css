@@ -138,21 +138,20 @@ body {
   /* Menu dạng dọc (ẩn mặc định) */
   .navbar {
     position: fixed;
-    top: 70px; /* chiều cao header */
-    right: -100%; /* ẩn đi */
-    width: 200px;
+    top: 65px;
+    left: 0;
+    width: 250px; /* có thể tăng chút để nhìn rõ */
     height: 100vh;
     background: rgba(0, 0, 0, 0.95);
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: start;
     padding: 20px;
-    transition: right 0.3s ease;
+    transform: translateX(-100%); /* ẩn hẳn */
+    transition: transform 0.3s ease-in-out;
   }
 
   .navbar.active {
-    right: 0; /* hiện menu khi mở */
+    transform: translateX(0); /* trượt vào */
   }
 
   .navbar .nav-menu {
