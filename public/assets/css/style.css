@@ -600,9 +600,9 @@ body {
 }
 
 .section3 .section-title {
-    padding-bottom: 0px;
-    margin-bottom: 15px;
-    height: 400;
+  padding-bottom: 0px;
+  margin-bottom: 15px;
+  height: 400;
 }
 
 .section3 .section-title .background-text {
@@ -672,9 +672,9 @@ body {
 
 .section3 .right {
   flex: 0.8; /* Giữ kích thước nhỏ */
-  max-width: 70%; /* Giới hạn chiều rộng */
+  max-width: 100%; /* Giới hạn chiều rộng */
   position: relative; /* Làm tham chiếu cho position absolute */
-  height: 500px; /* Tăng chiều cao để chứa toàn bộ ảnh, điều chỉnh nếu cần */
+  /* height: 500px; */
   padding: 0px;
   background-color: transparent; /* Giữ nền đen để kiểm tra */
 }
@@ -682,7 +682,7 @@ body {
 .section3 .gallery-grid {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 500px;
   padding: 20px;
   padding-right: 0;
 }
@@ -767,78 +767,233 @@ body {
   z-index: 10;
 }
 
+.section3 .small-title-phone {
+  display: none;
+}
+
 /* Responsive cho tablet */
-@media (max-width: 1024px) {
+/* ========== Responsive Section 3 ========== */
+
+/* Laptop nhỏ / iPad ngang */
+@media (max-width: 960px) {
+  .section3 {
+    padding: 60px 20px;
+  }
+
+  .section3 .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .section3 .left {
+    width: 100%;
+    order: 1;
+    text-align: center;
+  }
+
+  .section3 .right {
+    max-width: 100%;
+    height: auto;
+    order: 0;
+  }
+
+  .section3 .gallery-grid {
+    width: 700px;
+    padding: 0px;
+  }
+
+  .section3 .section-title {
+    width: 500px;
+  }
+
+  .section3 .section-title .background-text {
+    font-size: 60px;
+    letter-spacing: 10px;
+  }
+
+  .section3 .section-title .small-title {
+    font-size: 36px;
+  }
+
+  .section3 .desc {
+    font-size: 1rem;
+    max-width: 600px;
+  }
+
+  /* Ảnh 1: Khung dọc bên trái (người phụ nữ) */
   .section3 .gallery-grid img:nth-child(1) {
-    width: 18%;
-    height: 38%;
+    left: 7%;
   }
-  
+
+  /* Ảnh 2: Khung lớn ở giữa (hình tròn màu hồng/nâu) */
   .section3 .gallery-grid img:nth-child(2) {
-    width: 28%;
-    height: 44%;
+    left: 27%;
   }
-  
+
+  /* Ảnh 3: Khung nhỏ trên (2 màu nâu) */
+  .section3 .gallery-grid img:nth-child(3) {
+    left: 55%;
+  }
+
+  /* Ảnh 4: Khung dọc bên phải (đồ vật đen) */
   .section3 .gallery-grid img:nth-child(4) {
-    width: 20%;
-    height: 38%;
+    right: 7%;
+  }
+
+  /* Ảnh 5: Khung nhỏ dưới bên trái (hình oval đỏ) */
+  .section3 .gallery-grid img:nth-child(5) {
+    left: 12%;
+  }
+
+  /* Ảnh 6: Khung nhỏ (cầu vồng) */
+  .section3 .gallery-grid img:nth-child(6) {
+    left: 27%;
+  }
+
+  /* Ảnh 7: Khung trung bình ở giữa (hình vẽ đen) */
+  .section3 .gallery-grid img:nth-child(7) {
+    left: 55%;
+  }
+
+  /* Ảnh 8: Khung nhỏ dưới bên phải (hình hồng) */
+  .section3 .gallery-grid img:nth-child(8) {
+    right: 7%;
+  }
+
+  .section3 .btn {
+    font-size: 18px;
+    padding: 10px 28px;
   }
 }
 
-/* Responsive cho mobile */
 @media (max-width: 768px) {
+  .section3 {
+    padding: 60px 20px;
+  }
+
+  .section3 .container {
+    gap: 10px;
+  }
+
   .section3 .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 15px;
-    position: static;
-    padding: 10px;
+    width: 400px;
+    height: 350px;
+    padding: 0px;
   }
-  
-  .section3 .gallery-grid img {
-    position: static;
-    width: 100%;
-    height: 100%;
+
+  .section3 .section-title {
+    width: 500px;
   }
-  
-  .section3 .gallery-grid img:nth-child(1) {
-    grid-column: 1;
-    grid-row: 1 / 3;
+
+  .section3 .section-title .background-text {
+    font-size: 48px;
+    letter-spacing: 6px;
   }
-  
-  .section3 .gallery-grid img:nth-child(2) {
-    grid-column: 2 / 4;
-    grid-row: 1;
+
+  .section3 .section-title .small-title {
+    font-size: 28px;
   }
-  
-  .section3 .gallery-grid img:nth-child(3) {
-    grid-column: 2;
-    grid-row: 2;
+
+  .section3 .desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
-  
-  .section3 .gallery-grid img:nth-child(4) {
-    grid-column: 3;
-    grid-row: 2 / 4;
+}
+
+@media (max-width: 592px) {
+  .section3 {
+    padding: 40px 20px;
   }
-  
-  .section3 .gallery-grid img:nth-child(5) {
-    grid-column: 1;
-    grid-row: 3;
+
+  .section3 .container {
+    gap: 10px;
   }
-  
-  .section3 .gallery-grid img:nth-child(6) {
-    grid-column: 2;
-    grid-row: 3;
+
+  .section3 .gallery-grid {
+    width: 250px;
+    height: 280px;
+    padding: 0px;
   }
-  
-  .section3 .gallery-grid img:nth-child(7) {
-    grid-column: 3;
-    grid-row: 3;
+
+  .section3 .section-title {
+    width: 500px;
   }
-  
-  .section3 .gallery-grid img:nth-child(8) {
-    display: none; /* Ẩn ảnh thứ 8 trên mobile để tối ưu layout */
+
+  .section3 .section-title .background-text {
+    font-size: 32px;
+    letter-spacing: 3px;
+  }
+
+  .section3 .section-title .small-title {
+    display: none;
+  }
+
+  .section3 .small-title-phone {
+    /* display: inline-block;
+    top: 63%;
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(to right, #f5b5c5, #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 1.2; */
+    display: inline-block;
+    position: absolute;
+    top: 63%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    font-family: 'Great Vibes', cursive;  /* style mềm mại */
+    font-size: 22px;
+    color: #ffffff;
+    background: linear-gradient(to right, #f5b5c5, #fff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .section3 .section-title .small-title-phone::before {
+    content: "";
+    display: inline-block;
+    width: 25px;
+    height: 2px;
+    background: #f5b5c5;  /* thanh ngang màu hồng pastel */
+    margin: 0 8px;
+    vertical-align: middle;
+  }
+
+  .section3 .section-title .small-title-phone::after {
+    content: "";
+    display: inline-block;
+    width: 25px;
+    height: 2px;
+    background: #fff;  /* thanh ngang màu hồng pastel */
+    margin: 0 8px;
+    vertical-align: middle;
+  }
+
+  .section3 .section-title .small-title::before,
+  .section3 .section-title .small-title::after {
+    width: 25px;
+    margin: 0 8px;
+  }
+
+  .section2 .desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+    margin-bottom: 25px;
+  }
+  .section2 .btn {
+    font-size: 14px;
+    padding: 6px 18px;
   }
 }
 
