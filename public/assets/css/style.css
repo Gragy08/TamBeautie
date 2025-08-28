@@ -38,6 +38,8 @@ body {
 /* Container flex */
 .container {
   width: 1200px;
+  max-width: 100%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -70,6 +72,129 @@ body {
 .header.scrolled .navbar .nav-menu a:hover, 
 .header.scrolled .navbar .nav-menu a.active {
   color: #AD1457;
+}
+
+/* Mặc định desktop */
+.container {
+  width: 1200px;
+  max-width: 100%; /* co giãn theo màn hình */
+  margin: 0 auto;
+}
+
+/* Ẩn hamburger trên desktop */
+.menu-toggle {
+  display: none;
+}
+
+.phone-book {
+  display: none;
+}
+
+/* Tablet (iPad ngang/dọc) */
+@media (max-width: 1024px) {
+  .header {
+    padding: 15px 30px;
+  }
+  .logo img {
+    width: 180px;
+  }
+  .navbar .nav-menu {
+    gap: 20px;
+  }
+  .navbar .nav-menu a {
+    font-size: 15px;
+  }
+}
+
+/* Laptop nhỏ / iPad ngang */
+@media (max-width: 960px) {
+  .header {
+    padding: 10px 20px;
+  }
+  .logo img {
+    width: 170px;
+  }
+  .navbar .nav-menu {
+    gap: 15px;
+  }
+  .btn-book {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Mobile (điện thoại) */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  /* Logo nhỏ lại */
+  .logo img {
+    width: 160px;
+  }
+
+  /* Menu dạng dọc (ẩn mặc định) */
+  .navbar {
+    position: fixed;
+    top: 70px; /* chiều cao header */
+    right: -100%; /* ẩn đi */
+    width: 200px;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    padding: 20px;
+    transition: right 0.3s ease;
+  }
+
+  .navbar.active {
+    right: 0; /* hiện menu khi mở */
+  }
+
+  .navbar .nav-menu {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .navbar .nav-menu a {
+    font-size: 16px;
+  }
+
+  /* Nút Book Now nhỏ lại */
+  .btn-book {
+    padding: 6px 15px;
+    font-size: 14px;
+  }
+
+  /* Hamburger icon */
+  .menu-toggle {
+    display:inline-block;
+    cursor: pointer;
+    z-index: 1100;
+    color: #F59DC3;
+  }
+}
+
+@media (max-width: 576px) {
+  /* ví dụ: iPhone 11 Pro, Android tầm trung */
+  .logo img {
+    width: 150px;
+  }
+  .navbar .nav-menu a {
+    font-size: 14px;
+  }
+  .btn-book {
+    display: none;
+  }
+  .phone-book {
+    display: inline-block;
+    color: #F59DC3;
+    cursor: pointer;
+  }
 }
 
 /* Button */
