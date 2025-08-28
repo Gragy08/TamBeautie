@@ -912,7 +912,7 @@ body {
   }
 
   .section3 .gallery-grid {
-    width: 250px;
+    width: 350px;
     height: 280px;
     padding: 0px;
   }
@@ -931,17 +931,6 @@ body {
   }
 
   .section3 .small-title-phone {
-    /* display: inline-block;
-    top: 63%;
-    font-size: 22px;
-    font-weight: 600;
-    color: #ffffff;
-    background: linear-gradient(to right, #f5b5c5, #fff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0;
-    line-height: 1.2; */
     display: inline-block;
     position: absolute;
     top: 63%;
@@ -986,12 +975,13 @@ body {
     margin: 0 8px;
   }
 
-  .section2 .desc {
+  .section3 .desc {
     font-size: 0.9rem;
     max-width: 100%;
     margin-bottom: 25px;
+    width: 200px;
   }
-  .section2 .btn {
+  .section3 .btn {
     font-size: 14px;
     padding: 6px 18px;
   }
