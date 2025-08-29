@@ -989,12 +989,12 @@ body {
 
 .section4 {
   background: linear-gradient(135deg, #fff, #fff6f9);
-  padding: 50px 0;
+  padding: 60px 0;
   text-align: center;
 }
 
 .section4 .container {
-  max-width: 1200px;
+  width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
@@ -1002,15 +1002,18 @@ body {
 }
 
 .section4 .services {
+  width: 100%;
   display: flex;
-  justify-content: center;
-  gap: 30px;
+  justify-content: center; /* căn giữa các item */
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px; /* khoảng cách giữa các item */
 }
 
 .section4 .service-card {
-  width: 400px;
-  height: 250px;
-  background-color: #333; /* Nền tối giống ảnh */
+  width: 350px;
+  height: 230px;
+  background-color: #333;
   border-radius: 10px;
   overflow: hidden;
   position: relative;
@@ -1054,6 +1057,85 @@ body {
   font-family: 'Playfair Display', serif;
   margin: 0;
   z-index: 1;
+}
+
+@media (max-width: 960px) {
+  .section4 {
+    padding: 40px 0;
+  }
+   .section4 .section-title .background-text {
+    font-size: 60px;
+    letter-spacing: 10px;
+  }
+  .section4 .section-title .small-title {
+    font-size: 36px;
+  }
+  .section4 .desc {
+    font-size: 1rem;
+    max-width: 600px;
+  }
+  .section4 .service-card {
+    width: 300px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 767px) {
+  .section4 .section-title {
+    margin-bottom: 20px;
+  }
+  .section4 .section-title .background-text {
+    font-size: 48px;
+    letter-spacing: 6px;
+  }
+  .section4 .section-title .small-title {
+    font-size: 28px;
+  }
+  .section4 .desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .section4 .service-card h3 {
+    font-size: 28px;
+  }
+  .section4 .service-card p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 592px) {
+  .section4 {
+    padding: 20px 0;
+  }
+  .section4 .section-title {
+    margin-bottom: 20px;
+  }
+  .section4 .section-title .background-text {
+    font-size: 32px;
+    letter-spacing: 3px;
+  }
+  .section4 .section-title .small-title {
+    font-size: 22px;
+  }
+  .section4 .section-title .small-title::before,
+  .section4 .section-title .small-title::after {
+    width: 25px;
+    margin: 0 8px;
+  }
+  .section4 .desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+    margin-bottom: 25px;
+  }
+  .section4 .services {
+    gap: 20px;
+  }
+  .section4 .service-card h3 {
+    font-size: 26px;
+  }
+  .section4 .service-card p {
+    font-size: 14px;
+  }
 }
 
 .section5 {
@@ -1209,8 +1291,7 @@ body {
   border-color: #00aff0;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
   .section5 .right {
     padding: 60px 40px;
   }
@@ -1292,7 +1373,7 @@ body {
     padding: 12px 20px;
     font-size: 12px;
   }
-}
+} */
 
 .section5 .text6 {
   font-size: 78px;
@@ -1344,7 +1425,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .countdown-container {
     gap: 15px;
@@ -1386,7 +1466,159 @@ body {
   }
 }
 
-/* Animation for live countdown */
+/* ================= Responsive Section 5 ================= */
+
+/* Laptop nhỏ / Tablet ngang */
+@media (max-width: 960px) {
+  .section5 .right,
+  .section5 .right6 {
+    padding: 60px 40px;
+  }
+
+  .section-title .background-text {
+    font-size: 60px;
+    letter-spacing: 10px;
+  }
+
+  .section5 .section-title .small-title {
+    font-size: 36px;
+  }
+
+  .social-links,
+  .countdown-container {
+    width: 100%;
+    gap: 15px;
+  }
+
+  .countdown-item {
+    width: 80px;
+    padding: 15px;
+  }
+
+  .countdown-number {
+    font-size: 2rem;
+  }
+}
+
+/* Tablet dọc */
+@media (max-width: 767px) {
+  .section5 .inner {
+    flex-direction: column; /* stack dọc */
+  }
+  
+  .section5 .left {
+    width: 100%;
+    padding: 0;
+  }
+
+  .section5 .left img {
+    height: 250px;
+    object-fit: cover;
+    object-position: top;
+    width: 100%;
+  }
+
+  .section5 .right,
+  .section5 .right6 {
+    width: 100%;
+    padding: 40px 20px;
+  }
+
+  .section5 .section-title {
+    text-align: center;
+  }
+  .section5 .section-title .background-text {
+    font-size: 48px;
+    letter-spacing: 6px;
+  }
+  .section5 .section-title .small-title {
+    top: 65%;
+    left: 50%;
+    text-align: center;
+    font-size: 28px;
+  }
+  .section5 .desc {
+    text-align: center;
+    max-width: 100%;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .social-link {
+    justify-content: center;
+  }
+  .social-links a {
+    width: 80%;
+  }
+  .countdown-container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 592px) {
+  
+  .section5 .left img {
+    height: 200px;
+    object-fit: cover;
+    object-position: top;
+    width: 100%;
+  }
+
+  .section5 .right,
+  .section5 .right6 {
+    width: 100%;
+    padding: 20px 20px;
+  }
+
+  .section5 .section-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .section5 .section-title .background-text {
+    font-size: 32px;
+    letter-spacing: 3px;
+  }
+  .section5 .section-title .small-title {
+    top: 75%;
+    left: 50%;
+    text-align: center;
+    font-size: 22px;
+  }
+  .section5 .section-title .small-title::after {
+    width: 25px;
+    margin: 0 8px;
+  }
+  .section5 .desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+    margin-bottom: 25px;
+    margin-bottom: 0;
+  }
+  .social-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .social-links a {
+    text-align: center;
+    font-size: 10px;
+    width: 80%;
+  }
+  .countdown-container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
 .countdown-number {
   animation: pulse 1s ease-in-out;
 }
@@ -1536,6 +1768,82 @@ body {
 
 .gallery-right .gallery-item:last-child img {
   object-position: center center;
+}
+
+@media (max-width: 960px) {
+  .section6 .section-title .background-text {
+    font-size: 60px;
+    letter-spacing: 10px;
+  }
+  .section6 .section-title .small-title {
+    font-size: 36px;
+  }
+  .section6 .desc {
+    font-size: 1rem;
+    max-width: 600px;
+  }
+  .section2 .btn {
+    font-size: 18px;
+    padding: 10px 28px;
+  }
+}
+
+/* Tablet / iPad dọc */
+@media (max-width: 768px) {
+  .section6 {
+    padding: 40px 20px;
+    height: auto; /* bỏ chiều cao full màn để nội dung thoải mái */
+  }
+  .section6 .container {
+    padding: 0 20px;
+  }
+  .section6 .section-title {
+    margin-bottom: 20px;
+  }
+  .section6 .section-title .background-text {
+    font-size: 48px;
+    letter-spacing: 6px;
+  }
+  .section6 .section-title .small-title {
+    font-size: 28px;
+  }
+  .section6 .desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .section6 .btn {
+    font-size: 16px;
+    padding: 8px 22px;
+    margin-top: 20px;
+  }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 592px) {
+  .section6 {
+    padding: 20px 15px;
+  }
+  .section6 .section-title .background-text {
+    font-size: 32px;
+    letter-spacing: 3px;
+  }
+  .section6 .section-title .small-title {
+    font-size: 22px;
+  }
+  .section6 .section-title .small-title::before,
+  .section6 .section-title .small-title::after {
+    width: 25px;
+    margin: 0 8px;
+  }
+  .section6 .desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+    margin-bottom: 25px;
+  }
+  .section6 .btn {
+    font-size: 14px;
+    padding: 6px 18px;
+  }
 }
 
 /* Responsive Design */
