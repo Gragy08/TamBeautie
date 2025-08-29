@@ -1022,10 +1022,14 @@ body {
 @media (max-width: 592px) {
   .section3 {
     padding: 20px 20px;
+    margin: 0;
+    min-height: 70vh;
   }
 
   .section3 .container {
     gap: 10px;
+    margin: 0;
+    padding: 0;
   }
 
   .section3 .gallery-grid {
