@@ -687,7 +687,7 @@ body {
 /* Mobile nhỏ */
 @media (max-width: 592px) {
   .section2 {
-    padding: 40px 15px;
+    padding: 20px 20px;
   }
   .section2 .section-title .background-text {
     font-size: 32px;
@@ -1920,10 +1920,10 @@ body {
     font-size: 1rem;
     max-width: 600px;
   }
-  .section2 .btn {
+  /* .section2 .btn {
     font-size: 18px;
     padding: 10px 28px;
-  }
+  } */
 }
 
 /* Tablet / iPad dọc */
