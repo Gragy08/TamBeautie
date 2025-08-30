@@ -7,6 +7,11 @@
   box-sizing: border-box;
 }
 
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
@@ -1955,6 +1960,7 @@ body {
 @media (max-width: 592px) {
   .section6 {
     padding: 20px 15px;
+    margin: 0;
   }
   .section6 .section-title .background-text {
     font-size: 32px;
