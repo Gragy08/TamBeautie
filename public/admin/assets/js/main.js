@@ -45,12 +45,12 @@ if(contactCreateCategoryForm) {
   const validator = new JustValidate('#contactCreateCategoryForm');
 
   validator
-    // .addField('#name', [
-    //   {
-    //     rule: 'required',
-    //     errorMessage: 'Vui lòng nhập tên danh mục!',
-    //   },
-    // ])
+    .addField('#name', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập tên khách hàng!',
+      },
+    ])
     .onSuccess((event) => {
       const name = event.target.name.value;
       const phone = event.target.phone.value;
@@ -60,7 +60,7 @@ if(contactCreateCategoryForm) {
 
       // Tạo formData
       const formData = new FormData();
-      formData.append("name", name);
+      formData.append("fullName", name);
       formData.append("phone", phone);
       formData.append("dob", dob);
       formData.append("sex", sex);
@@ -72,7 +72,14 @@ if(contactCreateCategoryForm) {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          if(data.code == "error") {
+            notyf.error(data.message);
+          }
+
+          if(data.code == "success") {
+            drawNotify(data.code, data.message);
+            location.reload();
+          }
         })
     });
 }
