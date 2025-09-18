@@ -1,6 +1,7 @@
 const Contact = require("../../models/contact.model");
 const slugify = require("slugify");
 const moment = require("moment");
+const { pathAdmin } = require('../../config/variable');
 
 module.exports.contact = async (req, res) => {
   const recordList = await Contact.find({
@@ -41,6 +42,62 @@ module.exports.createContactPost = async (req,res) => {
     res.json({
       code: "success",
       message: "Tạo liên hệ thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Dữ liệu không hợp lệ!"
+    })
+  }
+}
+
+module.exports.editContact = async (req, res) => {
+  try {
+    const contactList = await Contact.find({});
+
+    const id = req.params.id;
+
+    const contactDetail = await Contact.findOne({
+      _id: id,
+      deleted: false
+    })
+
+    if(!contactDetail) {
+      res.redirect(`/${pathAdmin}/contact/list`);
+      return;
+    }
+
+    // Format lại ngày sinh để hiện đúng trong <input type="date">
+    const contactObj = contactDetail.toObject(); 
+    if (contactObj.dob) {
+      contactObj.dobFormatted = moment(contactObj.dob).format("YYYY-MM-DD");
+    }
+
+    res.render("admin/pages/contact-edit", {
+      pageTitle: "Chỉnh sửa chi tiết liên hệ",
+      contactDetail: contactObj
+    });
+  } catch (error) {
+    res.redirect(`/${pathAdmin}/contact/list`);
+  }
+}
+module.exports.editContactPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    req.body.search = slugify(`${req.body.name}`, {
+      replacement: " ",
+      lower: true
+    });
+
+    await Contact.updateOne({
+      _id: id,
+      deleted: false
+    }, req.body)
+
+    res.json({
+      code: "success",
+      message: "Cập nhật thành công!"
     })
   } catch (error) {
     res.json({

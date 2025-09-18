@@ -3,12 +3,14 @@ const Joi = require('joi');
 
 module.exports.createContactPost = (req, res, next) => {
   const schema = Joi.object({
-    name: Joi.string()
+    fullName: Joi.string()
       .required()
       .messages({
         "string.empty": "Vui lòng nhập tên khách hàng!"
       }),
-    parent: Joi.string().allow(''),
+    phone: Joi.string().allow(''),
+    dob: Joi.string().allow(''),
+    sex: Joi.string().allow(''),
     description: Joi.string().allow(''),
   })
 

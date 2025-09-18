@@ -1,0 +1,40 @@
+extends ../layouts/default.pug
+
+block main
+  .card
+    .card-header
+      .row.align-items-center
+        .col
+          h4.card-title #{pageTitle}
+    .card-body.pt-0
+      form(id="contactEditForm")
+        .row
+          .col-md-6.col-lg-6.d-none
+            .mb-3
+              label.form-label(for="id") Id *
+              input.form-control(id="id" type="text" name="id" value=contactDetail._id)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="name") Tên khách hàng *
+              input.form-control(id="name" type="text" name="name" value=contactDetail.fullName)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="phone") Số điện thoại *
+              input.form-control(id="phone" type="text" name="phone" value=contactDetail.phone)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="dob") Ngày sinh *
+              input.form-control(id="dob" type="date" name="dob" value=contactDetail.dobFormatted)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="sex") Giới tính
+              select.form-select(id="sex" name="sex")
+                option(value="male" selected=(contactDetail.status == "male" ? true : false)) Nam
+                option(value="female" selected=(contactDetail.status == "female" ? true : false)) Nữ
+                option(value="other" selected=(contactDetail.status == "other" ? true : false)) Khác
+          .col-md-12.col-lg-12
+            .mb-3
+              label.form-label(for="description") Mô tả
+              textarea.form-control(id="description" name="description") #{contactDetail.description}
+        button.btn.btn-primary(type="submit") Chỉnh sửa
+        a.btn.btn-danger.ms-1(href=`/${pathAdmin}/contact/list`) Hủy

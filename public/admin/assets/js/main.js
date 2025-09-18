@@ -51,6 +51,18 @@ if(contactCreateCategoryForm) {
         errorMessage: 'Vui lòng nhập tên khách hàng!',
       },
     ])
+    .addField('#phone', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập số điện thoại!',
+      },
+    ])
+    .addField('#dob', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập ngày sinh!',
+      },
+    ])
     .onSuccess((event) => {
       const name = event.target.name.value;
       const phone = event.target.phone.value;
@@ -85,41 +97,47 @@ if(contactCreateCategoryForm) {
 }
 // End contactCreateCategoryForm
 
-// articleEditCategoryForm
-const articleEditCategoryForm = document.querySelector("#articleEditCategoryForm");
-if(articleEditCategoryForm) {
-  const validator = new JustValidate('#articleEditCategoryForm');
+// contactEditForm
+const contactEditForm = document.querySelector("#contactEditForm");
+if(contactEditForm) {
+  const validator = new JustValidate('#contactEditForm');
 
   validator
     .addField('#name', [
       {
         rule: 'required',
-        errorMessage: 'Vui lòng nhập tên danh mục!',
+        errorMessage: 'Vui lòng nhập tên khách hàng!',
       },
     ])
-    .addField('#slug', [
+    .addField('#phone', [
       {
         rule: 'required',
-        errorMessage: 'Vui lòng nhập đường dẫn!',
+        errorMessage: 'Vui lòng nhập số điện thoại!',
+      },
+    ])
+    .addField('#dob', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập ngày sinh!',
       },
     ])
     .onSuccess((event) => {
       const id = event.target.id.value;
       const name = event.target.name.value;
-      const slug = event.target.slug.value;
-      const parent = event.target.parent.value;
-      const status = event.target.status.value;
-      const description = tinymce.get("description").getContent();
+      const phone = event.target.phone.value;
+      const dob = event.target.dob.value;
+      const sex = event.target.sex.value;
+      const description = event.target.description.value;
 
       // Tạo formData
       const formData = new FormData();
-      formData.append("name", name);
-      formData.append("slug", slug);
-      formData.append("parent", parent);
-      formData.append("status", status);
+      formData.append("fullName", name);
+      formData.append("phone", phone);
+      formData.append("dob", dob);
+      formData.append("sex", sex);
       formData.append("description", description);
 
-      fetch(`/${pathAdmin}/article/category/edit/${id}`, {
+      fetch(`/${pathAdmin}/contact/edit/${id}`, {
         method: "PATCH",
         body: formData
       })
@@ -135,7 +153,7 @@ if(articleEditCategoryForm) {
         })
     });
 }
-// End articleEditCategoryForm
+// End contactEditForm
 
 // btn-generate-slug
 const buttonGenerateSlug = document.querySelector("[btn-generate-slug]");

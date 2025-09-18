@@ -14,7 +14,14 @@ router.post(
     '/create',
     upload.none(),
     contactController.createContactPost,
-    contactValidate.createContactPost
+)
+
+router.get('/edit/:id', contactController.editContact)
+
+router.patch(
+    '/edit/:id',
+    upload.none(),
+    contactController.editContactPatch
 )
 
 module.exports = router;
