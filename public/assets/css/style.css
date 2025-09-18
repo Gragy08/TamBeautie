@@ -259,6 +259,45 @@ body {
   color: #fff;
 }
 
+.pre-breadcrumb {
+  background: #444444;
+  height: 100px;
+}
+
+.breadcrumb {
+  background: #E178A8; /* màu vàng nâu */
+  padding: 12px 20px;
+}
+
+.breadcrumb ul {
+  list-style: none;
+  display: flex;
+  justify-content: center; /* căn giữa ngang */
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb li {
+  color: #333;
+  font-size: 16px;
+}
+
+.breadcrumb a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.breadcrumb a:hover {
+  color: #AD1457; /* hồng đậm hơn khi hover */
+}
+
+.breadcrumb .separator {
+  color: #666;
+}
+
 /* Footer */
 .footer {
   background: #000; /* màu vàng nâu như ảnh */

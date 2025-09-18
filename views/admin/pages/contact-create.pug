@@ -1,0 +1,36 @@
+extends ../layouts/default.pug
+
+block main
+  .card
+    .card-header
+      .row.align-items-center
+        .col
+          h4.card-title #{pageTitle}
+    .card-body.pt-0
+      form(id="contactCreateCategoryForm")
+        .row
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="name") Tên khách hàng *
+              input.form-control(id="name" type="text" name="name")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="phone") Số điện thoại *
+              input.form-control(id="phone" type="text" name="phone")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="dob") Ngày sinh *
+              input.form-control(id="dob" type="date" name="dob")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="sex") Giới tính
+              select.form-select(id="sex" name="sex")
+                option(value="") Nam
+                option(value="") Nữ
+                option(value="") Khác
+          .col-md-12.col-lg-12
+            .mb-3
+              label.form-label(for="description") Mô tả
+              textarea.form-control(id="description" name="description")
+        button.btn.btn-primary(type="submit") Tạo mới
+        a.btn.btn-danger.ms-1(href=`/${pathAdmin}/contact/list`) Hủy

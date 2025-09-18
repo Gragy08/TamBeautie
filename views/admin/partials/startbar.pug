@@ -1,0 +1,84 @@
+.startbar.d-print-none
+  // start brand
+  .brand
+    a.logo(href=`/${pathAdmin}/dashboard`)
+      span
+        img.logo-sm(
+          alt="logo-small" 
+          src="/admin/assets/images/logo-sm.png"
+          )
+      span
+        img.logo-lg.logo-light(
+          alt="logo-large" 
+          src="/admin/assets/images/logo-light.png"
+          )
+        img.logo-lg.logo-dark(
+          alt="logo-large" 
+          src="/admin/assets/images/logo-dark.png"
+          )
+  // end brand
+  // start startbar-menu
+  .startbar-menu
+    #startbarCollapse.startbar-collapse(data-simplebar="")
+      .d-flex.align-items-start.flex-column.w-100
+        // Navigation
+        ul.navbar-nav.mb-auto.w-100
+          li.nav-item
+            a.nav-link(
+              href=`/${pathAdmin}/dashboard`
+              )
+              i.iconoir-home-simple.menu-icon
+              span Tổng quan
+          // end nav-item
+          li.nav-item
+            a.nav-link(
+              aria-controls="sidebarContact" 
+              aria-expanded="false" 
+              role="button" 
+              data-bs-toggle="collapse" 
+              href="#sidebarContact"
+              )
+              i.iconoir-group.menu-icon
+              span Khách hàng
+            #sidebarContact.collapse
+              ul.nav.flex-column
+                //- li.nav-item
+                //-   a.nav-link(href=`/${pathAdmin}/article/create`) Tạo bài viết
+                // end nav-item
+                li.nav-item
+                  a.nav-link(href=`/${pathAdmin}/contact/list`) Danh sách khách hàng
+                // end nav-item
+                //- li.nav-item
+                //-   a.nav-link(href=`/${pathAdmin}/service/list`) Danh sách dịch vụ
+                // end nav-item
+              // end nav
+            // end sidebarArticle
+          // end nav-item
+          li.nav-item
+            a.nav-link(
+              aria-controls="sidebarService" 
+              aria-expanded="false" 
+              role="button" 
+              data-bs-toggle="collapse" 
+              href="#sidebarService"
+              )
+              i.iconoir-healthcare.menu-icon
+              span Dịch vụ
+            #sidebarService.collapse
+              ul.nav.flex-column
+                //- li.nav-item
+                //-   a.nav-link(href=`/${pathAdmin}/article/create`) Tạo bài viết
+                // end nav-item
+                li.nav-item
+                  a.nav-link(href=`/${pathAdmin}/service/list`) Danh sách dịch vụ
+                // end nav-item
+                //- li.nav-item
+                //-   a.nav-link(href=`/${pathAdmin}/service/list`) Danh sách dịch vụ
+                // end nav-item
+              // end nav
+            // end sidebarService
+          // end nav-item
+    // end startbar-collapse
+  // end startbar-menu
+// end startbar
+.startbar-overlay.d-print-none
