@@ -29,9 +29,9 @@ block main
             .mb-3
               label.form-label(for="sex") Giới tính
               select.form-select(id="sex" name="sex")
-                option(value="male" selected=(contactDetail.status == "male" ? true : false)) Nam
-                option(value="female" selected=(contactDetail.status == "female" ? true : false)) Nữ
-                option(value="other" selected=(contactDetail.status == "other" ? true : false)) Khác
+                option(value="male" selected=(contactDetail.sex == "male" ? true : false)) Nam
+                option(value="female" selected=(contactDetail.sex == "female" ? true : false)) Nữ
+                option(value="other" selected=(contactDetail.sex == "other" ? true : false)) Khác
           .col-md-12.col-lg-12
             .mb-3
               label.form-label(for="description") Mô tả

@@ -8,6 +8,8 @@ const contactValidate = require("../../validates/admin/contact.validate")
 
 router.get('/list', contactController.contact)
 
+router.get('/list/trash', contactController.trashContact);
+
 router.get('/create', contactController.createContact)
 
 router.post(
@@ -23,5 +25,11 @@ router.patch(
     upload.none(),
     contactController.editContactPatch
 )
+
+router.patch('/delete/:id', contactController.deleteContactPatch);
+
+router.patch('/undo/:id', contactController.undoContactPatch);
+
+router.delete('/destroy/:id', contactController.destroyContactDelete);
 
 module.exports = router;

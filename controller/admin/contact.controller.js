@@ -21,6 +21,24 @@ module.exports.contact = async (req, res) => {
     recordList: formattedRecords
   });
 }
+module.exports.trashContact = async (req, res) => {
+  const recordList = await Contact.find({
+    deleted: true
+  })
+
+  // format dob cho từng bản ghi
+  const formattedRecords = recordList.map(item => {
+    return {
+      ...item._doc, // copy các field gốc
+      dob: item.dob ? moment(item.dob).format("DD/MM/YYYY") : "" // format ngày
+    };
+  });
+
+  res.render("admin/pages/contact-trash", {
+    pageTitle: "Thùng rác liên hệ",
+    recordList: formattedRecords
+  });
+}
 
 module.exports.createContact = (req,res) => {
   res.render("admin/pages/contact-create", {
@@ -85,10 +103,12 @@ module.exports.editContactPatch = async (req, res) => {
   try {
     const id = req.params.id;
 
-    req.body.search = slugify(`${req.body.name}`, {
+    req.body.search = slugify(`${req.body.fullName}`, {
       replacement: " ",
       lower: true
     });
+
+    console.log(req.body);
 
     await Contact.updateOne({
       _id: id,
@@ -103,6 +123,69 @@ module.exports.editContactPatch = async (req, res) => {
     res.json({
       code: "error",
       message: "Dữ liệu không hợp lệ!"
+    })
+  }
+}
+
+module.exports.deleteContactPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Contact.updateOne({
+      _id: id
+    }, {
+      deleted: true,
+      deletedAt: Date.now()
+    })
+
+    res.json({
+      code: "success",
+      message: "Xóa liên hệ thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Id không hợp lệ!"
+    })
+  }
+}
+module.exports.undoContactPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Contact.updateOne({
+      _id: id
+    }, {
+      deleted: false
+    })
+
+    res.json({
+      code: "success",
+      message: "Khôi phục liên hệ thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Id không hợp lệ!"
+    })
+  }
+}
+module.exports.destroyContactDelete = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Contact.deleteOne({
+      _id: id
+    })
+
+    res.json({
+      code: "success",
+      message: "Đã xóa vĩnh viễn liên hệ!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Id không hợp lệ!"
     })
   }
 }
