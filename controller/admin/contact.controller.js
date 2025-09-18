@@ -1,4 +1,5 @@
 const Contact = require("../../models/contact.model");
+const slugify = require("slugify");
 
 module.exports.contact = (req, res) => {
   res.render("admin/pages/contact", {
@@ -12,12 +13,25 @@ module.exports.createContact = (req,res) => {
   });
 }
 module.exports.createContactPost = async (req,res) => {
-  console.log(req.body);
-  const newContact = new Contact(req.body);
-  await newContact.save();
+  try {
+    console.log(req.body);
 
-  res.json({
-    code: "success",
-    message: "Tạo liên hệ thành công!"
-  })
+    req.body.search = slugify(`${req.body.fullName}`, {
+      replacement: " ",
+      lower: true
+    });
+
+    const newContact = new Contact(req.body);
+    await newContact.save();
+
+    res.json({
+      code: "success",
+      message: "Tạo liên hệ thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Dữ liệu không hợp lệ!"
+    })
+  }
 }

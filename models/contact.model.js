@@ -17,6 +17,7 @@ const schema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    search: String,
     deletedAt: Date
   },
   {
