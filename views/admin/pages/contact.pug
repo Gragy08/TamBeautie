@@ -19,4 +19,35 @@ block main
         // end card-header
         .card-body.pt-0
           //- Table
+          .table-responsive
+            table.table.table-striped.mb-0
+              thead.table-light
+                tr
+                  th STT
+                  th Tên khách hàng
+                  th Số điện thoại
+                  th Ngày sinh nhật
+                  th Giới tính
+                  th.text-end Hành động
+              tbody
+                each item, index in recordList
+                  tr
+                    td #{index + 1}
+                    td #{item.fullName}
+                    td #{item.phone}
+                    td #{item.dob}
+                    td
+                      if (item.sex == "male")
+                        span.badge.bg-info Nam
+                      else if (item.sex == "female")
+                        span.badge.bg-pink Nữ
+                      else if (item.sex == "other")
+                        span.badge.bg-success Khác
+                    td.text-end
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-eye.text-secondary.font-16.me-1
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-pen.text-secondary.font-16.me-1
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-trash-alt.text-secondary.font-16
     // end col
