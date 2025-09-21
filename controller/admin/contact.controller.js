@@ -17,7 +17,31 @@ module.exports.contact = async (req, res) => {
     find.search = keyword;
   }
 
-  const recordList = await Contact.find(find);
+  // const recordList = await Contact.find(find);
+
+  // Phân trang
+  const limitItems = 5;
+  let page = 1;
+  if(req.query.page && parseInt(`${req.query.page}`) > 0) {
+    page = parseInt(`${req.query.page}`);
+  }
+  const totalRecord = await Contact.countDocuments(find);
+  const totalPage = Math.ceil(totalRecord/limitItems);
+  const skip = (page - 1) * limitItems;
+  const pagination = {
+    totalRecord: totalRecord,
+    totalPage: totalPage,
+    skip: skip
+  };
+  // Hết Phân trang
+
+  const recordList = await Contact
+    .find(find)
+    .sort({
+      createdAt: "desc"
+    })
+    .limit(limitItems)
+    .skip(skip)
 
   // format dob cho từng bản ghi
   const formattedRecords = recordList.map(item => {
@@ -29,7 +53,8 @@ module.exports.contact = async (req, res) => {
 
   res.render("admin/pages/contact", {
     pageTitle: "Quản lý danh sách liên hệ",
-    recordList: formattedRecords
+    recordList: formattedRecords,
+    pagination: pagination
   });
 }
 module.exports.trashContact = async (req, res) => {
@@ -59,6 +84,16 @@ module.exports.createContact = (req,res) => {
 module.exports.createContactPost = async (req,res) => {
   try {
     console.log(req.body);
+
+    // Kiểm tra số điện thoại đã tồn tại chưa
+    const existContact = await Contact.findOne({ phone: req.body.phone });
+    if (existContact) {
+      res.json({
+        code: "error",
+        message: "Số điện thoại đã trùng!"
+      });
+      return;
+    }
 
     req.body.search = req.body.phone;
 
