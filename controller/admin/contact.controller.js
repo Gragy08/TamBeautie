@@ -4,9 +4,20 @@ const moment = require("moment");
 const { pathAdmin } = require('../../config/variable');
 
 module.exports.contact = async (req, res) => {
-  const recordList = await Contact.find({
+  // const recordList = await Contact.find({
+  //   deleted: false
+  // })
+
+  const find = {
     deleted: false
-  })
+  };
+
+  if(req.query.keyword) {
+    const keyword = req.query.keyword;
+    find.search = keyword;
+  }
+
+  const recordList = await Contact.find(find);
 
   // format dob cho từng bản ghi
   const formattedRecords = recordList.map(item => {
@@ -49,10 +60,7 @@ module.exports.createContactPost = async (req,res) => {
   try {
     console.log(req.body);
 
-    req.body.search = slugify(`${req.body.fullName}`, {
-      replacement: " ",
-      lower: true
-    });
+    req.body.search = req.body.phone;
 
     const newContact = new Contact(req.body);
     await newContact.save();
