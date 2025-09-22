@@ -5,6 +5,11 @@ const schema = new mongoose.Schema(
     name: String,
     price: String,
     description: String,
+    deleted: {
+      type: Boolean,
+      default: false
+    },
+    search: String
   },
   {
     timestamps: true, // Tự động sinh ra trường createdAt và updatedAt
