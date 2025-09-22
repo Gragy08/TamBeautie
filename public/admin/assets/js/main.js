@@ -270,12 +270,18 @@ if(serviceCreateCategoryForm) {
   const validator = new JustValidate('#serviceCreateCategoryForm');
 
   validator
-    // .addField('#name', [
-    //   {
-    //     rule: 'required',
-    //     errorMessage: 'Vui lòng nhập tên danh mục!',
-    //   },
-    // ])
+    .addField('#name', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập tên dịch vụ!',
+      },
+    ])
+    .addField('#price', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập giá của dịch vụ!',
+      },
+    ])
     .onSuccess((event) => {
       const name = event.target.name.value;
       const price = event.target.price.value;
@@ -293,7 +299,14 @@ if(serviceCreateCategoryForm) {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          if(data.code == "error") {
+            notyf.error(data.message);
+          }
+
+          if(data.code == "success") {
+            drawNotify(data.code, data.message);
+            location.reload();
+          }
         })
     });
 }
