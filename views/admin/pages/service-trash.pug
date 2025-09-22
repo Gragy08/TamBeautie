@@ -10,20 +10,14 @@ block main
               h4.card-title #{pageTitle}
             // end col
             .col-auto
-              a.btn.btn-danger.me-1(
-                href=`/${pathAdmin}/service/list/trash`
+              a.btn.btn-info(
+                href=`/${pathAdmin}/service/list`
                 )
-                i.las.la-trash-alt.me-1
-                | Thùng rác
-              a.btn.btn-primary(
-                href=`/${pathAdmin}/service/create`
-                )
-                i.fa-solid.fa-plus.me-1
-                | Tạo mới dịch vụ
+                <i class="fa-solid fa-arrow-left me-1"></i>
+                | Quay lại danh sách
           // end row
         // end card-header
         .card-body.pt-0
-          //- Table
           .table-responsive
             table.table.table-striped.mb-0
               thead.table-light
@@ -31,8 +25,6 @@ block main
                   th STT
                   th Tên dịch vụ
                   th Giá dịch vụ
-                  //- th Trạng thái
-                  //- th Lượt xem
                   th.text-end Hành động
               tbody
                 each item, index in recordList
@@ -47,16 +39,21 @@ block main
                     //-     span.badge.bg-danger Tạm dừng
                     //- td #{item.view}
                     td.text-end
-                      a(href="#" style="font-size: 20px")
-                        i.las.la-eye.text-info.font-16.me-1
-                      a(href=`/${pathAdmin}/service/edit/${item.id}` style="font-size: 20px")
-                        i.las.la-pen.text-warning.font-16.me-1
                       a(
                         href="javascript:;"
                         button-api
                         data-method="PATCH"
-                        data-api=`/${pathAdmin}/service/delete/${item.id}`
+                        data-api=`/${pathAdmin}/service/undo/${item.id}`
+                        class="me-1"
                         style="font-size: 20px"
                         )
-                        i.las.la-trash-alt.text-danger.font-16
+                        <i class="fa-solid fa-rotate-left"></i>
+                      a(
+                        href="javascript:;"
+                        button-api
+                        data-method="DELETE"
+                        data-api=`/${pathAdmin}/service/destroy/${item.id}`
+                        style="font-size: 20px"
+                        )
+                        <i class="fa-solid fa-trash text-danger"></i>
     // end col

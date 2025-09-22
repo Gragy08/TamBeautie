@@ -13,6 +13,17 @@ module.exports.service = async (req, res) => {
   });
 }
 
+module.exports.trashService = async (req, res) => {
+    const recordList = await Service.find({
+      deleted: true
+    })
+
+    res.render("admin/pages/service-trash", {
+        pageTitle: "Thùng rác dịch vụ",
+        recordList: recordList
+    })
+}
+
 module.exports.createService = (req, res) => {
   res.render("admin/pages/service-create", {
     pageTitle: "Tạo dịch vụ mới"
@@ -90,6 +101,71 @@ module.exports.editServicePatch = async (req, res) => {
     res.json({
       code: "error",
       message: "Dữ liệu không hợp lệ!"
+    })
+  }
+}
+
+module.exports.deleteServicePatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Service.updateOne({
+      _id: id
+    }, {
+      deleted: true,
+      deletedAt: Date.now()
+    })
+
+    res.json({
+      code: "success",
+      message: "Xóa dịch vụ thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Id không hợp lệ!"
+    })
+  }
+}
+
+module.exports.undoServicePatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Service.updateOne({
+      _id: id
+    }, {
+      deleted: false
+    })
+
+    res.json({
+      code: "success",
+      message: "Khôi phục dịch vụ thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Id không hợp lệ!"
+    })
+  }
+}
+
+module.exports.destroyServiceDelete = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Service.deleteOne({
+      _id: id
+    })
+
+    res.json({
+      code: "success",
+      message: "Đã xóa vĩnh viễn dịch vụ!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Id không hợp lệ!"
     })
   }
 }

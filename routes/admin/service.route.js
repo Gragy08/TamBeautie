@@ -8,7 +8,7 @@ const serviceController = require("../../controller/admin/service.controller")
 
 router.get('/list', serviceController.service)
 
-// router.get('/list/trash', serviceController.trashService);
+router.get('/list/trash', serviceController.trashService);
 
 router.get('/create', serviceController.createService)
 
@@ -26,10 +26,10 @@ router.patch(
     serviceController.editServicePatch
 )
 
-// router.patch('/delete/:id', serviceController.deleteServicePatch);
+router.patch('/delete/:id', serviceController.deleteServicePatch);
 
-// router.patch('/undo/:id', serviceController.undoServicePatch);
+router.patch('/undo/:id', serviceController.undoServicePatch);
 
-// router.delete('/destroy/:id', serviceController.destroyServiceDelete);
+router.delete('/destroy/:id', serviceController.destroyServiceDelete);
 
 module.exports = router;
