@@ -32,4 +32,6 @@ router.patch('/undo/:id', contactController.undoContactPatch);
 
 router.delete('/destroy/:id', contactController.destroyContactDelete);
 
+router.get('/view/:id', contactController.view)
+
 module.exports = router;

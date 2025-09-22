@@ -1,0 +1,114 @@
+extends ../layouts/default.pug
+
+block main
+  .card
+    .card-header
+      .row.align-items-center
+        .col
+          h4.card-title #{pageTitle}
+    .card-body.pt-0
+      form(id="contactEditForm")
+        .row
+          .col-md-6.col-lg-6.d-none
+            .mb-3
+              label.form-label(for="id") Id *
+              input.form-control(id="id" type="text" name="id" value=contactDetail._id readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="name") Tên khách hàng *
+              input.form-control(id="name" type="text" name="name" value=contactDetail.fullName readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="phone") Số điện thoại *
+              input.form-control(id="phone" type="text" name="phone" value=contactDetail.phone readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="dob") Ngày sinh *
+              input.form-control(id="dob" type="date" name="dob" value=contactDetail.dobFormatted readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="sex") Giới tính
+              select.form-select(id="sex" name="sex" disabled)
+                option(value="male" selected=(contactDetail.sex == "male" ? true : false)) Nam
+                option(value="female" selected=(contactDetail.sex == "female" ? true : false)) Nữ
+                option(value="other" selected=(contactDetail.sex == "other" ? true : false)) Khác
+          .col-md-12.col-lg-12
+            .mb-3
+              label.form-label(for="description") Mô tả
+              textarea.form-control(id="description" name="description" readonly) #{contactDetail.description}
+        //- button.btn.btn-primary(type="submit") Chỉnh sửa
+        //- a.btn.btn-danger.ms-1(href=`/${pathAdmin}/contact/list`) Hủy
+
+    .card
+        .card-header
+          .row.align-items-center
+            .col
+              h4.card-title Lịch sử sử dụng dịch vụ
+            // end col
+            .col-auto
+              a.btn.btn-info.me-1(
+                href=`/${pathAdmin}/contact/list`
+                )
+                <i class="fa-solid fa-arrow-left me-1"></i>
+                | Quay lại danh sách
+              a.btn.btn-primary(
+                href=`/${pathAdmin}/booking/create/${contactDetail._id}`
+                )
+                i.fa-solid.fa-plus.me-1
+                | Tạo Lịch khám mới
+          // end row
+        // end card-header
+        .card-body.pt-0
+          .row
+            .col-lg-6
+              form.input-group.mb-3(form-search)
+                input.form-control(
+                  placeholder="Từ khóa..."
+                  type="text"
+                  name="keyword"
+                  )
+                button.btn.btn-secondary Tìm kiếm
+          //- Table
+          .table-responsive
+            table.table.table-striped.mb-0
+              thead.table-light
+                tr
+                  th STT
+                  th Tên dịch vụ
+                  th Ngày sử dụng dịch vụ
+                  th Giá dịch vụ
+                  th Khách thanh toán
+                  th Trạng thái
+                  th.text-end Hành động
+              tbody
+                
+                tr
+                    td 1
+                    td Tiêm Filler Hàn
+                    td 19/07/2025
+                    td 1100
+                    td 500
+                    td
+                      span.badge.bg-success Hoàn thành
+                    //- else if (item.sex == "guarantee")
+                    //-   span.badge.bg-pink Bảo hành
+                    //- else if (item.sex == "cancel")
+                    //-   span.badge.bg-danger Hủy
+                    td.text-end
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-eye.text-info.font-16.me-1
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-pen.text-warning.font-16.me-1
+                      a(
+                        href="javascript:;"
+                        button-api
+                        data-method="PATCH"
+                        data-api="#"
+                        style="font-size: 20px"
+                        )
+                        i.las.la-trash-alt.text-danger.font-16
+        //-   .row.mt-3
+        //-     .col-lg-2.col-md-3.col-6
+        //-       select.form-select(pagination)
+        //-         - for (let i = 1; i <= pagination.totalPage; i++)
+        //-           option(value=i) Trang #{i}

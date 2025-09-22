@@ -1,0 +1,57 @@
+extends ../layouts/default.pug
+
+block main
+  .card
+    .card-header
+      .row.align-items-center
+        .col
+          h4.card-title
+            | #{pageTitle} của 
+            span(style="color: #e83e8c") #{contactDetail.fullName}
+    .card-body.pt-0
+      form(id="bookingCreateForm")
+        .row
+          .col-md-6.col-lg-6.d-none
+            .mb-3
+              label.form-label(for="id") Id *
+              input.form-control(id="id" type="text" name="id" value=contactDetail._id)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="name") Tên dịch vụ *
+                select.form-select(id="name" name="name")
+                  each item in serviceList
+                    option(value=item.name data-price=item.price) #{item.name}
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="price") Giá dịch vụ
+              input.form-control(id="price" type="text" name="price")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="pay") Khách thanh toán
+              input.form-control(id="pay" type="text" name="pay")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="date") Ngày khám *
+              input.form-control(id="date" type="date" name="date")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="status") Trạng thái
+              select.form-select(id="status" name="status")
+                option(value="success") Hoàn thành
+                option(value="unsuccess") Chưa Hoàn thành
+                option(value="guarantee") Bảo hành
+                option(value="cancel") Hủy
+          .col-md-12.col-lg-12
+            .mb-3
+              label.form-label(for="description") Mô tả
+              textarea.form-control(id="description" name="description")
+        button.btn.btn-primary(type="submit") Tạo mới
+        a.btn.btn-danger.ms-1(href=`/${pathAdmin}/contact/view/${contactDetail._id}`) Hủy
+
+  script.
+    const selectService = document.getElementById('name');
+    const priceInput = document.getElementById('price');
+    selectService.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      priceInput.value = selectedOption.getAttribute('data-price') || '';
+    });

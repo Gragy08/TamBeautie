@@ -59,7 +59,7 @@ block main
                         else if (item.sex == "other")
                           span.badge.bg-success Khác
                       td.text-end
-                        a(href="#" style="font-size: 20px")
+                        a(href=`/${pathAdmin}/contact/view/${item._id}` style="font-size: 20px")
                           i.las.la-eye.text-info.font-16.me-1
                         a(href=`/${pathAdmin}/contact/edit/${item._id}` style="font-size: 20px")
                           i.las.la-pen.text-warning.font-16.me-1

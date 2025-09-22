@@ -32,6 +32,30 @@
           // end nav-item
           li.nav-item
             a.nav-link(
+              aria-controls="sidebarBooking" 
+              aria-expanded="false" 
+              role="button" 
+              data-bs-toggle="collapse" 
+              href="#sidebarBooking"
+              )
+              i.iconoir-calendar.menu-icon
+              span Đơn khám
+            #sidebarBooking.collapse
+              ul.nav.flex-column
+                //- li.nav-item
+                //-   a.nav-link(href=`/${pathAdmin}/article/create`) Tạo bài viết
+                // end nav-item
+                li.nav-item
+                  a.nav-link(href=`/${pathAdmin}/booking/list`) Danh sách Đơn khám
+                // end nav-item
+                //- li.nav-item
+                //-   a.nav-link(href=`/${pathAdmin}/service/list`) Danh sách dịch vụ
+                // end nav-item
+              // end nav
+            // end sidebarArticle
+          // end nav-item
+          li.nav-item
+            a.nav-link(
               aria-controls="sidebarContact" 
               aria-expanded="false" 
               role="button" 

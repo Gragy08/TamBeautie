@@ -52,7 +52,7 @@ module.exports.contact = async (req, res) => {
   });
 
   res.render("admin/pages/contact", {
-    pageTitle: "Quản lý danh sách liên hệ",
+    pageTitle: "Quản lý danh sách khách hàng",
     recordList: formattedRecords,
     pagination: pagination
   });
@@ -71,14 +71,14 @@ module.exports.trashContact = async (req, res) => {
   });
 
   res.render("admin/pages/contact-trash", {
-    pageTitle: "Thùng rác liên hệ",
+    pageTitle: "Thùng rác khách hàng",
     recordList: formattedRecords
   });
 }
 
 module.exports.createContact = (req,res) => {
   res.render("admin/pages/contact-create", {
-    pageTitle: "Tạo liên hệ mới"
+    pageTitle: "Tạo khách hàng mới"
   });
 }
 module.exports.createContactPost = async (req,res) => {
@@ -102,7 +102,7 @@ module.exports.createContactPost = async (req,res) => {
 
     res.json({
       code: "success",
-      message: "Tạo liên hệ thành công!"
+      message: "Tạo khách hàng thành công!"
     })
   } catch (error) {
     res.json({
@@ -135,7 +135,7 @@ module.exports.editContact = async (req, res) => {
     }
 
     res.render("admin/pages/contact-edit", {
-      pageTitle: "Chỉnh sửa chi tiết liên hệ",
+      pageTitle: "Chỉnh sửa chi tiết khách hàng",
       contactDetail: contactObj
     });
   } catch (error) {
@@ -183,7 +183,7 @@ module.exports.deleteContactPatch = async (req, res) => {
 
     res.json({
       code: "success",
-      message: "Xóa liên hệ thành công!"
+      message: "Xóa khách hàng thành công!"
     })
   } catch (error) {
     res.json({
@@ -204,7 +204,7 @@ module.exports.undoContactPatch = async (req, res) => {
 
     res.json({
       code: "success",
-      message: "Khôi phục liên hệ thành công!"
+      message: "Khôi phục khách hàng thành công!"
     })
   } catch (error) {
     res.json({
@@ -223,12 +223,41 @@ module.exports.destroyContactDelete = async (req, res) => {
 
     res.json({
       code: "success",
-      message: "Đã xóa vĩnh viễn liên hệ!"
+      message: "Đã xóa vĩnh viễn khách hàng!"
     })
   } catch (error) {
     res.json({
       code: "error",
       message: "Id không hợp lệ!"
     })
+  }
+}
+
+module.exports.view = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const contactDetail = await Contact.findOne({
+      _id: id,
+      deleted: false
+    })
+
+    if(!contactDetail) {
+      res.redirect(`/${pathAdmin}/contact/list`);
+      return;
+    }
+
+    // Format lại ngày sinh để hiện đúng trong <input type="date">
+    const contactObj = contactDetail.toObject(); 
+    if (contactObj.dob) {
+      contactObj.dobFormatted = moment(contactObj.dob).format("YYYY-MM-DD");
+    }
+
+    res.render("admin/pages/contact-view", {
+      pageTitle: "Xem chi tiết khách hàng",
+      contactDetail: contactObj
+    });
+  } catch (error) {
+    res.redirect(`/${pathAdmin}/contact/list`);
   }
 }

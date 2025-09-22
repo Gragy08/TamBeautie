@@ -9,8 +9,16 @@ const schema = new mongoose.Schema(
     description: String,
     bookings: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Booking"
+        name: String,
+        price: String,
+        pay: String,
+        date: Date,
+        status: {
+          type: String,
+          enum: ["success", "unsuccess", "guarantee", "cancel"],
+          default: "unsuccess"
+        },
+        description: String
       }
     ],
     deleted: {
