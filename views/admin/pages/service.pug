@@ -19,4 +19,33 @@ block main
         // end card-header
         .card-body.pt-0
           //- Table
+          .table-responsive
+            table.table.table-striped.mb-0
+              thead.table-light
+                tr
+                  th STT
+                  th Tên dịch vụ
+                  th Giá dịch vụ
+                  //- th Trạng thái
+                  //- th Lượt xem
+                  th.text-end Hành động
+              tbody
+                each item, index in recordList
+                  tr
+                    td #{index + 1}
+                    td #{item.name}
+                    td #{item.price}
+                    //- td
+                    //-   if (item.status == "active")
+                    //-     span.badge.bg-success Hoạt động
+                    //-   else if (item.status == "inactive")
+                    //-     span.badge.bg-danger Tạm dừng
+                    //- td #{item.view}
+                    td.text-end
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-eye.text-info.font-16.me-1
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-pen.text-warning.font-16.me-1
+                      a(href="#" style="font-size: 20px")
+                        i.las.la-trash-alt.text-danger.font-16
     // end col

@@ -1,9 +1,14 @@
 const Service = require("../../models/service.model");
 const slugify = require("slugify");
 
-module.exports.service = (req, res) => {
+module.exports.service = async (req, res) => {
+  const recordList = await Service.find({
+    deleted: false
+  })
+
   res.render("admin/pages/service", {
-    pageTitle: "Quản lý dịch vụ"
+    pageTitle: "Quản lý dịch vụ",
+    recordList: recordList
   });
 }
 
