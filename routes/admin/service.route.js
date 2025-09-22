@@ -18,13 +18,13 @@ router.post(
     serviceController.createServicePost,
 )
 
-// router.get('/edit/:id', serviceController.editService)
+router.get('/edit/:id', serviceController.editService)
 
-// router.patch(
-//     '/edit/:id',
-//     upload.none(),
-//     serviceController.editServicePatch
-// )
+router.patch(
+    '/edit/:id',
+    upload.none(),
+    serviceController.editServicePatch
+)
 
 // router.patch('/delete/:id', serviceController.deleteServicePatch);
 

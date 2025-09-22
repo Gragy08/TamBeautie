@@ -1,5 +1,6 @@
 const Service = require("../../models/service.model");
 const slugify = require("slugify");
+const { pathAdmin } = require('../../config/variable');
 
 module.exports.service = async (req, res) => {
   const recordList = await Service.find({
@@ -33,6 +34,57 @@ module.exports.createServicePost = async (req, res) => {
     res.json({
         code: "success",
         message: "Tạo dịch vụ thành công!"
+    })
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: "Dữ liệu không hợp lệ!"
+    })
+  }
+}
+
+module.exports.editService = async (req, res) => {
+  try {
+    const serviceList = await Service.find({});
+
+    const id = req.params.id;
+
+    const serviceDetail = await Service.findOne({
+      _id: id,
+      deleted: false
+    })
+
+    if(!serviceDetail) {
+      res.redirect(`/${pathAdmin}/service/list`);
+      return;
+    }
+
+    res.render("admin/pages/service-edit", {
+      pageTitle: "Chỉnh sửa chi tiết dịch vụ",
+      serviceDetail: serviceDetail
+    });
+  } catch (error) {
+    res.redirect(`/${pathAdmin}/service/list`);
+  }
+}
+
+module.exports.editServicePatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    req.body.search = slugify(`${req.body.name}`, {
+      replacement: " ",
+      lower: true
+    });
+
+    await Service.updateOne({
+      _id: id,
+      deleted: false
+    }, req.body)
+
+    res.json({
+      code: "success",
+      message: "Cập nhật thành công!"
     })
   } catch (error) {
     res.json({

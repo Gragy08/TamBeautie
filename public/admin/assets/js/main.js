@@ -311,3 +311,51 @@ if(serviceCreateCategoryForm) {
     });
 }
 // End serviceCreateCategoryForm
+
+// serviceEditCategoryForm
+const serviceEditCategoryForm = document.querySelector("#serviceEditCategoryForm");
+if(serviceEditCategoryForm) {
+  const validator = new JustValidate('#serviceEditCategoryForm');
+
+  validator
+    .addField('#name', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập tên dịch vụ!',
+      },
+    ])
+    .addField('#price', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập giá của dịch vụ!',
+      },
+    ])
+    .onSuccess((event) => {
+      const id = event.target.id.value;
+      const name = event.target.name.value;
+      const price = event.target.price.value;
+      const description = event.target.description.value;
+
+      // Tạo formData
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("price", price);
+      formData.append("description", description);
+
+      fetch(`/${pathAdmin}/service/edit/${id}`, {
+        method: "PATCH",
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          if(data.code == "error") {
+            notyf.error(data.message);
+          }
+
+          if(data.code == "success") {
+            notyf.success(data.message);
+          }
+        })
+    });
+}
+// End serviceEditCategoryForm
