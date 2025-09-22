@@ -1,0 +1,25 @@
+extends ../layouts/default.pug
+
+block main
+  .card
+    .card-header
+      .row.align-items-center
+        .col
+          h4.card-title #{pageTitle}
+    .card-body.pt-0
+      form(id="serviceCreateCategoryForm")
+        .row
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="name") Tên dịch vụ *
+              input.form-control(id="name" type="text" name="name")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="price") Giá dịch vụ *
+              input.form-control(id="price" type="text" name="price")
+          .col-md-12.col-lg-12
+            .mb-3
+              label.form-label(for="description") Mô tả
+              textarea.form-control(id="description" name="description")
+        button.btn.btn-primary(type="submit") Tạo mới
+        a.btn.btn-danger.ms-1(href=`/${pathAdmin}/service/list`) Hủy

@@ -263,3 +263,38 @@ if(pagination) {
   }
 }
 // End pagination
+
+// serviceCreateCategoryForm
+const serviceCreateCategoryForm = document.querySelector("#serviceCreateCategoryForm");
+if(serviceCreateCategoryForm) {
+  const validator = new JustValidate('#serviceCreateCategoryForm');
+
+  validator
+    // .addField('#name', [
+    //   {
+    //     rule: 'required',
+    //     errorMessage: 'Vui lòng nhập tên danh mục!',
+    //   },
+    // ])
+    .onSuccess((event) => {
+      const name = event.target.name.value;
+      const price = event.target.price.value;
+      const description = event.target.description.value;
+
+      // Tạo formData
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("price", price);
+      formData.append("description", description);
+
+      fetch(`/${pathAdmin}/service/create`, {
+        method: "POST",
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+        })
+    });
+}
+// End serviceCreateCategoryForm
