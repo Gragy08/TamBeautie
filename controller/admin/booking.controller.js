@@ -1,6 +1,7 @@
 const Contact = require("../../models/contact.model");
 const Service = require("../../models/service.model")
 const moment = require("moment");
+const slugify = require("slugify");
 
 module.exports.booking = async (req, res) => {
   res.render("admin/pages/booking", {
@@ -51,6 +52,11 @@ module.exports.createPost = async (req, res) => {
       res.json({ code: "error", message: "Không tìm thấy khách hàng!" });
       return;
     }
+
+    req.body.search = slugify(`${req.body.name}`, {
+      replacement: " ",
+      lower: true
+    });
 
     // Thêm booking mới vào mảng bookings
     contact.bookings.push(req.body);

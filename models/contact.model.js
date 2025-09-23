@@ -19,7 +19,12 @@ const schema = new mongoose.Schema(
           enum: ["success", "unsuccess", "guarantee", "cancel"],
           default: "unsuccess"
         },
-        description: String
+        description: String,
+        deleted: {
+          type: Boolean,
+          default: false
+        },
+        search: String
       }
     ],
     deleted: {
