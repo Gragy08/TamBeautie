@@ -474,3 +474,55 @@ if(bookingEditForm) {
     });
 }
 // End bookingEditForm
+
+// Check-all cho booking
+const checkAllBox = document.getElementById("check-all");
+const bookingCheckboxes = document.querySelectorAll("input[name='bookingIds']");
+
+if (checkAllBox && bookingCheckboxes.length > 0) {
+  checkAllBox.addEventListener("change", function() {
+    bookingCheckboxes.forEach(cb => cb.checked = checkAllBox.checked);
+  });
+}
+// End Check-all cho booking
+
+// Đổi trạng thái hàng loạt
+const bulkStatusBtn = document.getElementById("bulk-status-confirm");
+const bulkStatusSelect = document.querySelector("select[name='bulk-status']");
+
+if (bulkStatusBtn && bulkStatusSelect) {
+  bulkStatusBtn.addEventListener("click", async function() {
+    const status = bulkStatusSelect.value;
+    if (!status) {
+      alert("Vui lòng chọn trạng thái!");
+      return;
+    }
+    // Lấy các booking đã chọn
+    const checkedIds = Array.from(document.querySelectorAll("input[name='bookingIds']:checked"))
+      .map(cb => cb.value);
+
+    if (checkedIds.length === 0) {
+      alert("Vui lòng chọn ít nhất một đơn khám!");
+      return;
+    }
+
+    // Gửi request đổi trạng thái (ví dụ PATCH tới /admin/booking/bulk-status)
+    try {
+      const res = await fetch(`/${pathAdmin}/booking/bulk-status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: checkedIds, status })
+      });
+      const data = await res.json();
+      if (data.code === "success") {
+        drawNotify(data.code, data.message);
+        location.reload();
+      } else {
+        alert(data.message || "Có lỗi xảy ra!");
+      }
+    } catch (err) {
+      alert("Có lỗi xảy ra!");
+    }
+  });
+}
+// End đổi trạng thái hàng loạt

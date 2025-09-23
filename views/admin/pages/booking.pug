@@ -27,11 +27,22 @@ block main
                   name="keyword"
                   )
                 button.btn.btn-secondary Tìm kiếm
+            .col-lg-6
+              .input-group.mb-3
+                select.form-select(name="bulk-status" style="width: 160px;")
+                  option(value="") -- Đổi trạng thái --
+                  option(value="success") Hoàn thành
+                  option(value="unsuccess") Chưa hoàn thành
+                  option(value="guarantee") Bảo hành
+                  option(value="cancel") Hủy
+                button.btn.btn-primary(type="button" id="bulk-status-confirm") Xác nhận
           //- Table
           .table-responsive
             table.table.table-striped.mb-0
               thead.table-light
                 tr
+                  th
+                    input(type="checkbox" id="check-all" check-all)
                   th STT
                   th Tên khách hàng
                   th SĐT khách hàng
@@ -46,8 +57,9 @@ block main
                 if(bookingList.length > 0)
                   each item, index in bookingList
                     tr
+                      td
+                        input(type="checkbox" name="bookingIds" value=item._id)
                       td #{pagination.skip + index + 1}
-                      //- td #{index + 1}
                       td #{item.contactName}
                       td #{item.contactPhone}
                       td #{item.name}
@@ -79,7 +91,7 @@ block main
                             i.las.la-trash-alt.text-danger.font-16
                 else
                   tr
-                    td(colspan="6" class="text-center") Không tìm thấy dữ liệu
+                    td(colspan="12" class="text-center") Không tìm thấy dữ liệu
           .row.mt-3
             .col-lg-2.col-md-3.col-6
               select.form-select(pagination)

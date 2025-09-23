@@ -363,3 +363,36 @@ module.exports.destroyBookingDelete = async (req, res) => {
     res.json({ code: "error", message: "Có lỗi xảy ra!" });
   }
 }
+
+module.exports.bulkStatusPatch = async (req, res) => {
+  try {
+    const { ids, status } = req.body;
+    if (!Array.isArray(ids) || !status) {
+      return res.json({ code: "error", message: "Thiếu dữ liệu!" });
+    }
+
+    // Tìm tất cả contact có booking cần đổi trạng thái
+    const contacts = await Contact.find({
+      "bookings._id": { $in: ids }
+    });
+
+    let updatedCount = 0;
+    for (const contact of contacts) {
+      let changed = false;
+      contact.bookings.forEach(booking => {
+        if (ids.includes(booking._id.toString())) {
+          booking.status = status;
+          changed = true;
+          updatedCount++;
+        }
+      });
+      if (changed) {
+        await contact.save();
+      }
+    }
+
+    res.json({ code: "success", message: `Đã cập nhật trạng thái ${updatedCount} đơn khám!` });
+  } catch (error) {
+    res.json({ code: "error", message: "Có lỗi xảy ra!" });
+  }
+}

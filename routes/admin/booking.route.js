@@ -30,4 +30,6 @@ router.patch('/undo/:id/:bookingId', bookingController.undoBookingPatch);
 
 router.delete('/destroy/:id/:bookingId', bookingController.destroyBookingDelete);
 
+router.patch('/bulk-status', bookingController.bulkStatusPatch);
+
 module.exports = router;
