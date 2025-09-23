@@ -51,6 +51,11 @@ block main
                 )
                 <i class="fa-solid fa-arrow-left me-1"></i>
                 | Quay lại danh sách
+              a.btn.btn-danger.me-1(
+                href=`/${pathAdmin}/booking/list/trash/${contactDetail._id}`
+                )
+                i.las.la-trash-alt.me-1
+                | Thùng rác lịch khám
               a.btn.btn-primary(
                 href=`/${pathAdmin}/booking/create/${contactDetail._id}`
                 )
@@ -109,7 +114,7 @@ block main
                             href="javascript:;"
                             button-api
                             data-method="PATCH"
-                            data-api="#"
+                            data-api=`/${pathAdmin}/booking/delete/${contactDetail._id}/${item._id}`
                             style="font-size: 20px"
                             )
                             i.las.la-trash-alt.text-danger.font-16

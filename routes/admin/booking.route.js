@@ -20,4 +20,12 @@ router.post(
     bookingController.editPatch,
 )
 
+router.get('/list/trash/:id', bookingController.trashCustomerBooking)
+
+router.patch('/delete/:id/:bookingId', bookingController.deleteBookingPatch);
+
+router.patch('/undo/:id/:bookingId', bookingController.undoBookingPatch);
+
+router.delete('/destroy/:id/:bookingId', bookingController.destroyBookingDelete);
+
 module.exports = router;

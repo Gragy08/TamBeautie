@@ -1,3 +1,4 @@
+const { model } = require("mongoose");
 const Contact = require("../../models/contact.model");
 const Service = require("../../models/service.model")
 const moment = require("moment");
@@ -106,7 +107,6 @@ module.exports.edit = async (req, res) => {
     res.redirect(`/${pathAdmin}/contact/list`);
   }
 }
-
 module.exports.editPatch = async (req, res) => {
     try {
     const contactId = req.params.id;
@@ -142,6 +142,135 @@ module.exports.editPatch = async (req, res) => {
   await contact.save();
 
   res.json({ code: "success", message: "Cập nhật đơn khám thành công!" });
+  } catch (error) {
+    res.json({ code: "error", message: "Có lỗi xảy ra!" });
+  }
+}
+
+module.exports.trashCustomerBooking = async (req, res) => {
+    const id = req.params.id;
+    
+    const contactDetail = await Contact.findOne({
+        _id: id,
+        deleted: false
+    })
+
+    if(!contactDetail) {
+        res.redirect(`/${pathAdmin}/contact/list`);
+        return;
+    }
+
+    // Format lại ngày sinh để hiện đúng trong <input type="date">
+    const contactObj = contactDetail.toObject(); 
+    if (contactObj.dob) {
+        contactObj.dobFormatted = moment(contactObj.dob).format("YYYY-MM-DD");
+    }
+
+
+    // Lấy danh sách booking có deleted = true và format lại trường date
+    let bookingList = (contactObj.bookings || []).filter(item => item.deleted === true);
+    bookingList = bookingList.map(item => {
+        return {
+        ...item,
+        dateFormatted: item.date ? moment(item.date).format("YYYY-MM-DD") : ""
+        };
+    });
+
+    res.render("admin/pages/booking-trash", {
+        pageTitle: "Thùng rác lịch khám",
+        contactDetail: contactObj,
+        bookingList: bookingList
+    });
+}
+
+module.exports.deleteBookingPatch = async (req, res) => {
+  try {
+    const contactId = req.params.id;
+    // Tìm contact theo id
+    const contact = await Contact.findById(contactId);
+    if (!contact) {
+      res.json({ code: "error", message: "Không tìm thấy khách hàng!" });
+      return;
+    }
+
+    // Tìm booking trong mảng bookings
+    const bookingId = req.params.bookingId;
+    const booking = contact.bookings.id(bookingId) || contact.bookings.find(b => b._id && b._id.toString() === bookingId);
+
+    if (!booking) {
+      res.json({ code: "error", message: "Không tìm thấy đơn khám!" });
+      return;
+    }
+
+  // Cập nhật các trường của booking
+  booking.deleted = true;
+  booking.deletedAt = new Date();
+
+  await contact.save();
+
+  res.json({ code: "success", message: "Xóa đơn khám thành công!" });
+  } catch (error) {
+    res.json({ code: "error", message: "Có lỗi xảy ra!" });
+  }
+}
+
+module.exports.undoBookingPatch = async (req, res) => {
+  try {
+    const contactId = req.params.id;
+    // Tìm contact theo id
+    const contact = await Contact.findById(contactId);
+    if (!contact) {
+      res.json({ code: "error", message: "Không tìm thấy khách hàng!" });
+      return;
+    }
+
+    // Tìm booking trong mảng bookings
+    const bookingId = req.params.bookingId;
+    const booking = contact.bookings.id(bookingId) || contact.bookings.find(b => b._id && b._id.toString() === bookingId);
+
+    if (!booking) {
+      res.json({ code: "error", message: "Không tìm thấy đơn khám!" });
+      return;
+    }
+
+  // Cập nhật các trường của booking
+  booking.deleted = false;
+  booking.deletedAt = new Date();
+
+  await contact.save();
+
+  res.json({ code: "success", message: "Khôi phục đơn khám thành công!" });
+  } catch (error) {
+    res.json({ code: "error", message: "Có lỗi xảy ra!" });
+  }
+}
+
+module.exports.destroyBookingDelete = async (req, res) => {
+    try {
+    const contactId = req.params.id;
+    // Tìm contact theo id
+    const contact = await Contact.findById(contactId);
+    if (!contact) {
+      res.json({ code: "error", message: "Không tìm thấy khách hàng!" });
+      return;
+    }
+
+    // Tìm booking trong mảng bookings
+    const bookingId = req.params.bookingId;
+
+    const bookingSub = contact.bookings.id(bookingId);
+    if (!bookingSub) {
+      return res.json({ code: "error", message: "Không tìm thấy đơn khám!" });
+    }
+
+    // Xóa booking bằng cách filter (an toàn hơn remove)
+    contact.bookings = contact.bookings.filter(
+      b => b._id.toString() !== bookingId
+    );
+
+    await contact.save();
+
+  res.json({ code: "success", message: "Đã xóa vĩnh viễn đơn khám!" });
   } catch (error) {
     res.json({ code: "error", message: "Có lỗi xảy ra!" });
   }

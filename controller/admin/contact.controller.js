@@ -254,13 +254,13 @@ module.exports.view = async (req, res) => {
     }
 
 
-    // Lấy danh sách booking và format lại trường date
-    let bookingList = contactObj.bookings || [];
+    // Lấy danh sách booking có deleted = true và format lại trường date
+    let bookingList = (contactObj.bookings || []).filter(item => item.deleted === false);
     bookingList = bookingList.map(item => {
-      return {
+        return {
         ...item,
         dateFormatted: item.date ? moment(item.date).format("YYYY-MM-DD") : ""
-      };
+        };
     });
 
     res.render("admin/pages/contact-view", {
