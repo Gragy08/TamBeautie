@@ -10,14 +10,23 @@ block main
               h4.card-title #{pageTitle}
             // end col
             .col-auto
-              a.btn.btn-primary(
-                href=`/${pathAdmin}/booking/create`
+              a.btn.btn-danger.me-1(
+                href=`/${pathAdmin}/booking/list/trashList`
                 )
-                i.fa-solid.fa-plus.me-1
-                | Tạo đơn khám
+                i.las.la-trash-alt.me-1
+                | Thùng rác đơn khám
           // end row
         // end card-header
         .card-body.pt-0
+          .row
+            .col-lg-6
+              form.input-group.mb-3(form-search)
+                input.form-control(
+                  placeholder="Nhập SĐT..."
+                  type="text"
+                  name="keyword"
+                  )
+                button.btn.btn-secondary Tìm kiếm
           //- Table
           .table-responsive
             table.table.table-striped.mb-0
@@ -37,8 +46,8 @@ block main
                 if(bookingList.length > 0)
                   each item, index in bookingList
                     tr
-                      //- td #{pagination.skip + index + 1}
-                      td #{index + 1}
+                      td #{pagination.skip + index + 1}
+                      //- td #{index + 1}
                       td #{item.contactName}
                       td #{item.contactPhone}
                       td #{item.name}
@@ -71,9 +80,9 @@ block main
                 else
                   tr
                     td(colspan="6" class="text-center") Không tìm thấy dữ liệu
-          //- .row.mt-3
-          //-   .col-lg-2.col-md-3.col-6
-          //-     select.form-select(pagination)
-          //-       - for (let i = 1; i <= pagination.totalPage; i++)
-          //-         option(value=i) Trang #{i}
+          .row.mt-3
+            .col-lg-2.col-md-3.col-6
+              select.form-select(pagination)
+                - for (let i = 1; i <= pagination.totalPage; i++)
+                  option(value=i) Trang #{i}
     // end col

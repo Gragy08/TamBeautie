@@ -22,6 +22,8 @@ router.post(
 
 router.get('/list/trash/:id', bookingController.trashCustomerBooking)
 
+router.get('/list/trashList', bookingController.trashList)
+
 router.patch('/delete/:id/:bookingId', bookingController.deleteBookingPatch);
 
 router.patch('/undo/:id/:bookingId', bookingController.undoBookingPatch);

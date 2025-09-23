@@ -25,6 +25,15 @@ module.exports.booking = async (req, res) => {
     });
   });
 
+  // Nếu có keyword, lọc theo tên dịch vụ hoặc trường search
+  if (req.query.keyword) {
+    const keyword = req.query.keyword.toLowerCase();
+    allBookings = allBookings.filter(item =>
+        (item.contactPhone && item.contactPhone.toLowerCase().includes(keyword)) ||
+        (item.search && item.search.toLowerCase().includes(keyword))
+    );
+  }
+
   // Sắp xếp tất cả bookings theo date giảm dần
   allBookings = allBookings.sort((a, b) => {
     const dateA = a.date ? new Date(a.date) : new Date(0);
@@ -32,8 +41,61 @@ module.exports.booking = async (req, res) => {
     return dateB - dateA;
   });
 
+  // Phân trang bookingList
+    const limitItems = 5; // Số item mỗi trang
+    let page = 1;
+    if (req.query.page && parseInt(req.query.page) > 0) {
+      page = parseInt(req.query.page);
+    }
+    const totalRecord = allBookings.length;
+    const totalPage = Math.ceil(totalRecord / limitItems);
+    const skip = (page - 1) * limitItems;
+    const pagination = {
+      totalRecord: totalRecord,
+      totalPage: totalPage,
+      page: page,
+      limitItems: limitItems,
+      skip: skip
+    };
+    const pagedBookingList = allBookings.slice(skip, skip + limitItems);
+
   res.render("admin/pages/booking", {
     pageTitle: "Quản lý đơn khám",
+    bookingList: pagedBookingList,
+    pagination: pagination
+  });
+}
+
+module.exports.trashList = async (req, res) => {
+  // Lấy tất cả Contact
+  const contacts = await Contact.find({ deleted: false });
+
+  // Gom tất cả bookings lại thành 1 mảng
+  let allBookings = [];
+  contacts.forEach(contact => {
+    (contact.bookings || []).forEach(booking => {
+      if (booking.deleted === true) {
+        const bookingObj = booking.toObject ? booking.toObject() : booking;
+        allBookings.push({
+          ...bookingObj,
+          contactId: contact._id,
+          contactName: contact.fullName,
+          contactPhone: contact.phone,
+          formatedDate: bookingObj.date ? moment(bookingObj.date).format("YYYY-MM-DD") : ""
+        });
+      }
+    });
+  });
+
+  // Sắp xếp tất cả bookings theo date giảm dần
+  allBookings = allBookings.sort((a, b) => {
+    const dateA = a.date ? new Date(a.date) : new Date(0);
+    const dateB = b.date ? new Date(b.date) : new Date(0);
+    return dateB - dateA;
+  });
+
+  res.render("admin/pages/booking-trashList", {
+    pageTitle: "Thùng rác các đơn khám",
     bookingList: allBookings
   });
 }
@@ -241,7 +303,6 @@ module.exports.deleteBookingPatch = async (req, res) => {
     res.json({ code: "error", message: "Có lỗi xảy ra!" });
   }
 }
-
 module.exports.undoBookingPatch = async (req, res) => {
   try {
     const contactId = req.params.id;
@@ -272,7 +333,6 @@ module.exports.undoBookingPatch = async (req, res) => {
     res.json({ code: "error", message: "Có lỗi xảy ra!" });
   }
 }
-
 module.exports.destroyBookingDelete = async (req, res) => {
     try {
     const contactId = req.params.id;
