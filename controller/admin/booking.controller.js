@@ -5,8 +5,36 @@ const moment = require("moment");
 const slugify = require("slugify");
 
 module.exports.booking = async (req, res) => {
+  // Lấy tất cả Contact
+  const contacts = await Contact.find({ deleted: false });
+
+  // Gom tất cả bookings lại thành 1 mảng
+  let allBookings = [];
+  contacts.forEach(contact => {
+    (contact.bookings || []).forEach(booking => {
+      if (booking.deleted === false) {
+        const bookingObj = booking.toObject ? booking.toObject() : booking;
+        allBookings.push({
+          ...bookingObj,
+          contactId: contact._id,
+          contactName: contact.fullName,
+          contactPhone: contact.phone,
+          formatedDate: bookingObj.date ? moment(bookingObj.date).format("YYYY-MM-DD") : ""
+        });
+      }
+    });
+  });
+
+  // Sắp xếp tất cả bookings theo date giảm dần
+  allBookings = allBookings.sort((a, b) => {
+    const dateA = a.date ? new Date(a.date) : new Date(0);
+    const dateB = b.date ? new Date(b.date) : new Date(0);
+    return dateB - dateA;
+  });
+
   res.render("admin/pages/booking", {
-    pageTitle: "Quản lý đơn khám"
+    pageTitle: "Quản lý đơn khám",
+    bookingList: allBookings
   });
 }
 
