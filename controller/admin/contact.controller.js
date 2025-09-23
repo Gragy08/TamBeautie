@@ -254,14 +254,22 @@ module.exports.view = async (req, res) => {
     }
 
 
-    // Lấy danh sách booking có deleted = true và format lại trường date
+    // Lấy danh sách booking có deleted = false
     let bookingList = (contactObj.bookings || []).filter(item => item.deleted === false);
-    bookingList = bookingList.map(item => {
-        return {
-        ...item,
-        dateFormatted: item.date ? moment(item.date).format("YYYY-MM-DD") : ""
-        };
-    });
+
+    // Nếu có keyword, lọc theo tên dịch vụ hoặc trường search
+    if (req.query.keyword) {
+      const keyword = req.query.keyword.toLowerCase();
+      bookingList = bookingList.filter(item =>
+        (item.name && item.name.toLowerCase().includes(keyword)) ||
+        (item.search && item.search.toLowerCase().includes(keyword))
+      );
+    }
+
+    bookingList = bookingList.map(item => ({
+      ...item,
+      dateFormatted: item.date ? moment(item.date).format("YYYY-MM-DD") : ""
+    }));
 
     res.render("admin/pages/contact-view", {
       pageTitle: "Xem chi tiết khách hàng",
