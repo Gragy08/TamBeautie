@@ -253,7 +253,6 @@ module.exports.view = async (req, res) => {
       contactObj.dobFormatted = moment(contactObj.dob).format("YYYY-MM-DD");
     }
 
-
     // Lấy danh sách booking có deleted = false
     let bookingList = (contactObj.bookings || []).filter(item => item.deleted === false);
 
@@ -266,15 +265,42 @@ module.exports.view = async (req, res) => {
       );
     }
 
+    // Sắp xếp bookingList theo ngày giảm dần (desc)
+    bookingList = bookingList.sort((a, b) => {
+      const dateA = a.date ? new Date(a.date) : new Date(0);
+      const dateB = b.date ? new Date(b.date) : new Date(0);
+      return dateB - dateA;
+    });
+
+    // Format lại trường date
     bookingList = bookingList.map(item => ({
       ...item,
       dateFormatted: item.date ? moment(item.date).format("YYYY-MM-DD") : ""
     }));
 
+    // Phân trang bookingList
+    const limitItems = 5; // Số item mỗi trang
+    let page = 1;
+    if (req.query.page && parseInt(req.query.page) > 0) {
+      page = parseInt(req.query.page);
+    }
+    const totalRecord = bookingList.length;
+    const totalPage = Math.ceil(totalRecord / limitItems);
+    const skip = (page - 1) * limitItems;
+    const pagination = {
+      totalRecord: totalRecord,
+      totalPage: totalPage,
+      page: page,
+      limitItems: limitItems,
+      skip: skip
+    };
+    const pagedBookingList = bookingList.slice(skip, skip + limitItems);
+
     res.render("admin/pages/contact-view", {
       pageTitle: "Xem chi tiết khách hàng",
       contactDetail: contactObj,
-      bookingList: bookingList
+      bookingList: pagedBookingList,
+      pagination: pagination
     });
   } catch (error) {
     res.redirect(`/${pathAdmin}/contact/list`);
