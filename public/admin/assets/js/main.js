@@ -382,6 +382,7 @@ if(bookingCreateForm) {
       const id = event.target.id.value;
       const name = event.target.name.value;
       const price = event.target.price.value;
+      const deposit = event.target.deposit.value;
       const pay = event.target.pay.value;
       const date = event.target.date.value;
       const status = event.target.status.value;
@@ -391,6 +392,7 @@ if(bookingCreateForm) {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
+      formData.append("deposit", deposit);
       formData.append("pay", pay);
       formData.append("date", date);
       formData.append("status", status);

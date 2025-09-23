@@ -77,36 +77,42 @@ block main
                   th Tên dịch vụ
                   th Ngày sử dụng dịch vụ
                   th Giá dịch vụ
+                  th Khách đã cọc
                   th Khách thanh toán
                   th Trạng thái
                   th.text-end Hành động
               tbody
-                
-                tr
-                    td 1
-                    td Tiêm Filler Hàn
-                    td 19/07/2025
-                    td 1100
-                    td 500
-                    td
-                      span.badge.bg-success Hoàn thành
-                    //- else if (item.sex == "guarantee")
-                    //-   span.badge.bg-pink Bảo hành
-                    //- else if (item.sex == "cancel")
-                    //-   span.badge.bg-danger Hủy
-                    td.text-end
-                      a(href="#" style="font-size: 20px")
-                        i.las.la-eye.text-info.font-16.me-1
-                      a(href="#" style="font-size: 20px")
-                        i.las.la-pen.text-warning.font-16.me-1
-                      a(
-                        href="javascript:;"
-                        button-api
-                        data-method="PATCH"
-                        data-api="#"
-                        style="font-size: 20px"
-                        )
-                        i.las.la-trash-alt.text-danger.font-16
+                if(bookingList.length > 0)
+                  each item, index in bookingList
+                    tr
+                      td #{index + 1}
+                      td #{item.name}
+                      td #{item.dateFormatted}
+                      td #{item.price}
+                      td 500
+                      td #{item.pay}
+                      td
+                        if (item.status == "success")
+                          span.badge.bg-success Hoàn thành
+                        if (item.status == "unsuccess")
+                          span.badge.bg-secondary Chưa Hoàn thành
+                        else if (item.status == "guarantee")
+                          span.badge.bg-pink Bảo hành
+                        else if (item.status == "cancel")
+                          span.badge.bg-danger Hủy
+                      td.text-end
+                        a(href="#" style="font-size: 20px")
+                            i.las.la-eye.text-info.font-16.me-1
+                        a(href="#" style="font-size: 20px")
+                            i.las.la-pen.text-warning.font-16.me-1
+                        a(
+                            href="javascript:;"
+                            button-api
+                            data-method="PATCH"
+                            data-api="#"
+                            style="font-size: 20px"
+                            )
+                            i.las.la-trash-alt.text-danger.font-16
         //-   .row.mt-3
         //-     .col-lg-2.col-md-3.col-6
         //-       select.form-select(pagination)

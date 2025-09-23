@@ -253,9 +253,20 @@ module.exports.view = async (req, res) => {
       contactObj.dobFormatted = moment(contactObj.dob).format("YYYY-MM-DD");
     }
 
+
+    // Lấy danh sách booking và format lại trường date
+    let bookingList = contactObj.bookings || [];
+    bookingList = bookingList.map(item => {
+      return {
+        ...item,
+        dateFormatted: item.date ? moment(item.date).format("YYYY-MM-DD") : ""
+      };
+    });
+
     res.render("admin/pages/contact-view", {
       pageTitle: "Xem chi tiết khách hàng",
-      contactDetail: contactObj
+      contactDetail: contactObj,
+      bookingList: bookingList
     });
   } catch (error) {
     res.redirect(`/${pathAdmin}/contact/list`);
