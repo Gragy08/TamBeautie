@@ -41,23 +41,32 @@ block main
                   th Tên khách hàng
                   th Số điện thoại
                   th Ngày sinh nhật
-                  th Giới tính
+                  th Dịch vụ gần đây
+                  th Ngày khám gần đây
                   th.text-end Hành động
               tbody
                 if(recordList.length > 0)
                   each item, index in recordList
+                    - var latestBooking = null;
+                    - if (Array.isArray(item.bookings) && item.bookings.length > 0) {
+                    -   latestBooking = item.bookings.reduce(function(a, b) {
+                    -     return new Date(a.date) > new Date(b.date) ? a : b;
+                    -   });
+                    - }
                     tr
                       td #{pagination.skip + index + 1}
                       td #{item.fullName}
                       td #{item.phone}
                       td #{item.dob}
-                      td
-                        if (item.sex == "male")
-                          span.badge.bg-info Nam
-                        else if (item.sex == "female")
-                          span.badge.bg-pink Nữ
-                        else if (item.sex == "other")
-                          span.badge.bg-success Khác
+                      td #{latestBooking ? latestBooking.name : '-'}
+                      td #{latestBooking && latestBooking.date ? (new Date(latestBooking.date)).toLocaleDateString('vi-VN') : '-'}
+                      //- td
+                      //-   if (item.sex == "male")
+                      //-     span.badge.bg-info Nam
+                      //-   else if (item.sex == "female")
+                      //-     span.badge.bg-pink Nữ
+                      //-   else if (item.sex == "other")
+                      //-     span.badge.bg-success Khác
                       td.text-end
                         a(href=`/${pathAdmin}/contact/view/${item._id}` style="font-size: 20px")
                           i.las.la-eye.text-info.font-16.me-1
