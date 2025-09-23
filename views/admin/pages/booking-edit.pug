@@ -30,8 +30,10 @@ block main
                            ) #{item.name}
           .col-md-6.col-lg-6
             .mb-3
-              label.form-label(for="price") Giá dịch vụ
-              input.form-control(id="price" type="text" name="price" value=bookingDetail.price)
+              label.form-label Giá dịch vụ / Đơn vị *
+              .input-group
+                input.form-control(id="price" type="text" name="price" placeholder="Giá dịch vụ" value=bookingDetail.price)
+                input.form-control(id="unit" type="text" name="unit" placeholder="Đơn vị" value=bookingDetail.unit)
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="deposit") Khách đã cọc
@@ -64,13 +66,24 @@ block main
       const priceInput = document.getElementById('price');
       const depositInput = document.getElementById('deposit');
       const payInput = document.getElementById('pay');
+      const unitInput = document.getElementById('unit');
       selectService.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
-        priceInput.value = selectedOption.getAttribute('data-price') || '';
-        // Khi chọn dịch vụ mới, giữ nguyên deposit, chỉ cập nhật lại pay
-        const price = parseFloat(priceInput.value) || 0;
+        const basePrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+        const unit = parseFloat(unitInput.value) || 1;
+        priceInput.value = basePrice * unit;
+        // Không reset deposit khi chỉnh sửa
         const deposit = parseFloat(depositInput.value) || 0;
-        payInput.value = price - deposit;
+        payInput.value = priceInput.value - deposit;
+      });
+      unitInput.addEventListener('input', function() {
+        const selectedOption = selectService.options[selectService.selectedIndex];
+        const basePrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+        const unit = parseFloat(unitInput.value) || 1;
+        priceInput.value = basePrice * unit;
+        // Khi thay đổi đơn vị, cập nhật lại pay
+        const deposit = parseFloat(depositInput.value) || 0;
+        payInput.value = priceInput.value - deposit;
       });
       priceInput.addEventListener('input', function() {
         // Khi giá thay đổi, cập nhật lại pay nếu có deposit

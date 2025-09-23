@@ -24,7 +24,10 @@ block main
                     thead.table-light
                         tr
                             th STT
+                            th Tên khách hàng
+                            th SĐT khách hàng
                             th Tên dịch vụ
+                            th Đơn vị
                             th Ngày sử dụng dịch vụ
                             th Giá dịch vụ
                             th Khách đã cọc
@@ -36,8 +39,11 @@ block main
                             each item, index in bookingList
                                 tr
                                 td #{index + 1}
+                                td #{item.contactName}
+                                td #{item.contactPhone}
                                 td #{item.name}
-                                td #{item.dateFormatted}
+                                td #{item.unit}
+                                td #{item.formatedDate}
                                 td #{item.price}
                                 td 500
                                 td #{item.pay}

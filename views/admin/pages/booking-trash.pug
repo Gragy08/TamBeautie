@@ -27,6 +27,7 @@ block main
                         tr
                             th STT
                             th Tên dịch vụ
+                            th Đơn vị
                             th Ngày sử dụng dịch vụ
                             th Giá dịch vụ
                             th Khách đã cọc
@@ -39,6 +40,7 @@ block main
                                 tr
                                 td #{index + 1}
                                 td #{item.name}
+                                td #{item.unit}
                                 td #{item.dateFormatted}
                                 td #{item.price}
                                 td 500

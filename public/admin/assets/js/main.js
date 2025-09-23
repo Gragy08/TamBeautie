@@ -378,10 +378,23 @@ if(bookingCreateForm) {
         errorMessage: 'Vui lòng nhập giá của dịch vụ!',
       },
     ])
+    .addField('#unit', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập đơn vị của dịch vụ!',
+      },
+    ])
+    .addField('#date', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập ngày khám của dịch vụ!',
+      },
+    ])
     .onSuccess((event) => {
       const id = event.target.id.value;
       const name = event.target.name.value;
       const price = event.target.price.value;
+      const unit = event.target.unit.value;
       const deposit = event.target.deposit.value;
       const pay = event.target.pay.value;
       const date = event.target.date.value;
@@ -392,6 +405,7 @@ if(bookingCreateForm) {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
+      formData.append("unit", unit);
       formData.append("deposit", deposit);
       formData.append("pay", pay);
       formData.append("date", date);
@@ -435,11 +449,24 @@ if(bookingEditForm) {
         errorMessage: 'Vui lòng nhập giá của dịch vụ!',
       },
     ])
+    .addField('#unit', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập đơn vị của dịch vụ!',
+      },
+    ])
+    .addField('#date', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập ngày khám của dịch vụ!',
+      },
+    ])
     .onSuccess((event) => {
       const id_customer = event.target.id_customer.value;
       const id_booking = event.target.id_booking.value;
       const name = event.target.name.value;
       const price = event.target.price.value;
+      const unit = event.target.unit.value;
       const deposit = event.target.deposit.value;
       const pay = event.target.pay.value;
       const date = event.target.date.value;
@@ -450,6 +477,7 @@ if(bookingEditForm) {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
+      formData.append("unit", unit);
       formData.append("deposit", deposit);
       formData.append("pay", pay);
       formData.append("date", date);

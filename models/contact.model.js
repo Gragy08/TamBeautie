@@ -11,6 +11,7 @@ const schema = new mongoose.Schema(
       {
         name: String,
         price: String,
+        unit: String,
         deposit: String,
         pay: String,
         date: Date,

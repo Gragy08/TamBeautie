@@ -219,6 +219,7 @@ module.exports.editPatch = async (req, res) => {
   // Cập nhật các trường của booking
   booking.name = req.body.name;
   booking.price = req.body.price;
+  booking.unit = req.body.unit;
   booking.deposit = req.body.deposit;
   booking.pay = req.body.pay;
   booking.date = req.body.date;
