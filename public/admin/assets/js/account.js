@@ -1,6 +1,6 @@
 // Login Form
 const loginForm = document.querySelector("#login-form");
-if(loginForm) {
+if (loginForm) {
   const validation = new JustValidate('#login-form');
 
   validation
@@ -46,12 +46,12 @@ if(loginForm) {
       const rememberPassword = event.target.rememberPassword.checked;
 
       const finalData = {
-        email: email,
-        password: password,
-        rememberPassword: rememberPassword
-      }
+        email,
+        password,
+        rememberPassword
+      };
 
-      console.log(finalData);
+      console.log("Form data gửi lên:", finalData);
 
       fetch(`/${pathAdmin}/account/login`, {
         method: 'POST',
@@ -61,19 +61,36 @@ if(loginForm) {
         body: JSON.stringify(finalData),
         credentials: 'include'
       })
-        .then(res => res.json())
-        .then(data => {
-          if(data.code == "error") {
-            alert(data.message);
+        .then(async (res) => {
+          console.log("HTTP Status:", res.status);
+
+          const rawText = await res.text();
+          console.log("Raw response:", rawText);
+
+          try {
+            return JSON.parse(rawText);
+          } catch (err) {
+            console.error("Không parse được JSON:", err);
+            throw new Error("Server trả về HTML hoặc dữ liệu không hợp lệ");
           }
-  
-          if(data.code == "success") {
-            alert(data.message);
+        })
+        .then(data => {
+          console.log("Parsed JSON:", data);
+
+          if (data.code === "error") {
+            alert(data.message || "Đăng nhập thất bại!");
+          }
+
+          if (data.code === "success") {
+            alert(data.message || "Đăng nhập thành công!");
             window.location.href = `/${pathAdmin}/dashboard`;
           }
         })
-    })
-  ;
+        .catch(err => {
+          console.error("Fetch error:", err);
+          alert("Có lỗi khi đăng nhập, xem log console để biết thêm chi tiết.");
+        });
+    });
 }
 // End Login Form
 
