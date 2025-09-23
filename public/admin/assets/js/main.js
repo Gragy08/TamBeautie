@@ -416,3 +416,61 @@ if(bookingCreateForm) {
     });
 }
 // End bookingCreateForm
+
+// bookingEditForm
+const bookingEditForm = document.querySelector("#bookingEditForm");
+if(bookingEditForm) {
+  const validator = new JustValidate('#bookingEditForm');
+
+  validator
+    .addField('#name', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập tên dịch vụ!',
+      },
+    ])
+    .addField('#price', [
+      {
+        rule: 'required',
+        errorMessage: 'Vui lòng nhập giá của dịch vụ!',
+      },
+    ])
+    .onSuccess((event) => {
+      const id_customer = event.target.id_customer.value;
+      const id_booking = event.target.id_booking.value;
+      const name = event.target.name.value;
+      const price = event.target.price.value;
+      const deposit = event.target.deposit.value;
+      const pay = event.target.pay.value;
+      const date = event.target.date.value;
+      const status = event.target.status.value;
+      const description = event.target.description.value;
+
+      // Tạo formData
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("price", price);
+      formData.append("deposit", deposit);
+      formData.append("pay", pay);
+      formData.append("date", date);
+      formData.append("status", status);
+      formData.append("description", description);
+
+      fetch(`/${pathAdmin}/booking/edit/${id_customer}/${id_booking}`, {
+        method: "POST",
+        body: formData
+      })
+        .then(res => res.json())
+        .then(data => {
+          if(data.code == "error") {
+            notyf.error(data.message);
+          }
+
+          if(data.code == "success") {
+            drawNotify(data.code, data.message);
+            location.reload();
+          }
+        })
+    });
+}
+// End bookingEditForm

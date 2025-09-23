@@ -1,0 +1,89 @@
+extends ../layouts/default.pug
+
+block main
+  .card
+    .card-header
+      .row.align-items-center
+        .col
+          h4.card-title
+            | #{pageTitle} của 
+            span(style="color: #e83e8c") #{contactDetail.fullName}
+    .card-body.pt-0
+      form(id="bookingEditForm")
+        .row
+          .col-md-6.col-lg-6.d-none
+            .mb-3
+              label.form-label(for="id_customer") Id khách *
+              input.form-control(id="id_customer" type="text" name="id_customer" value=contactDetail._id)
+          .col-md-6.col-lg-6.d-none
+            .mb-3
+              label.form-label(for="id_booking") Id *
+              input.form-control(id="id_booking" type="text" name="id_booking" value=bookingDetail._id)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="name") Tên dịch vụ *
+                select.form-select(id="name" name="name")
+                  each item in serviceList
+                    option(value=item.name 
+                           data-price=item.price
+                           selected=(item.name == bookingDetail.name ? true : false) 
+                           ) #{item.name}
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="price") Giá dịch vụ
+              input.form-control(id="price" type="text" name="price" value=bookingDetail.price)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="deposit") Khách đã cọc
+              input.form-control(id="deposit" type="text" name="deposit" value=bookingDetail.deposit)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="pay") Khách thanh toán
+              input.form-control(id="pay" type="text" name="pay" value=bookingDetail.pay)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="date") Ngày khám *
+              input.form-control(id="date" type="date" name="date" value=bookingDetail.dateFormatted)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="status") Trạng thái
+              select.form-select(id="status" name="status")
+                option(value="unsuccess" selected=(bookingDetail.status == "unsuccess" ? true : false)) Chưa Hoàn thành
+                option(value="success" selected=(bookingDetail.status == "success" ? true : false)) Hoàn thành
+                option(value="guarantee" selected=(bookingDetail.status == "guarantee" ? true : false)) Bảo hành
+                option(value="cancel" selected=(bookingDetail.status == "cancel" ? true : false)) Hủy
+          .col-md-12.col-lg-12
+            .mb-3
+              label.form-label(for="description") Mô tả
+              textarea.form-control(id="description" name="description") #{bookingDetail.description}
+        button.btn.btn-primary(type="submit") Tạo mới
+        a.btn.btn-danger.ms-1(href=`/${pathAdmin}/contact/view/${contactDetail._id}`) Hủy
+
+  script.
+      const selectService = document.getElementById('name');
+      const priceInput = document.getElementById('price');
+      const depositInput = document.getElementById('deposit');
+      const payInput = document.getElementById('pay');
+      selectService.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        priceInput.value = selectedOption.getAttribute('data-price') || '';
+        // Khi chọn dịch vụ mới, giữ nguyên deposit, chỉ cập nhật lại pay
+        const price = parseFloat(priceInput.value) || 0;
+        const deposit = parseFloat(depositInput.value) || 0;
+        payInput.value = price - deposit;
+      });
+      priceInput.addEventListener('input', function() {
+        // Khi giá thay đổi, cập nhật lại pay nếu có deposit
+        const price = parseFloat(priceInput.value) || 0;
+        const deposit = parseFloat(depositInput.value) || 0;
+        payInput.value = price - deposit;
+      });
+      depositInput.addEventListener('input', function() {
+        const price = parseFloat(priceInput.value) || 0;
+        const deposit = parseFloat(depositInput.value) || 0;
+        payInput.value = price - deposit;
+      });
+      // Khi load trang, nếu có giá thì set pay ban đầu
+    //-   if(priceInput.value) {
+    //-     payInput.value = priceInput.value;
+    //-   }

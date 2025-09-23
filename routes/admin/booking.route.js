@@ -13,4 +13,11 @@ router.post(
     bookingController.createPost,
 )
 
+router.get('/edit/:id/:bookingId', bookingController.edit)
+router.post(
+    '/edit/:id/:bookingId',
+    upload.none(),
+    bookingController.editPatch,
+)
+
 module.exports = router;
