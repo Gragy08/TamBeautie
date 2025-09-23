@@ -5,8 +5,31 @@
         li
           button#togglemenu.nav-link.mobile-menu-btn.nav-icon
             i.iconoir-menu-scale
+        // Script: Khi bấm nút menu, chỉ hiện logo-sm, ẩn logo-lg
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+              var toggleBtn = document.getElementById('togglemenu');
+              var isLogoLgVisible = true;
+              if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                  var logoSm = document.querySelector('.logo-sm');
+                  var logoLgLight = document.querySelector('.logo-lg.logo-light');
+                  var logoLgDark = document.querySelector('.logo-lg.logo-dark');
+                  if (isLogoLgVisible) {
+                    if (logoSm) logoSm.style.display = '';
+                    if (logoLgLight) logoLgLight.style.display = 'none';
+                    if (logoLgDark) logoLgDark.style.display = 'none';
+                  } else {
+                    if (logoLgLight) logoLgLight.style.display = '';
+                    if (logoLgDark) logoLgDark.style.display = '';
+                  }
+                  isLogoLgVisible = !isLogoLgVisible;
+                });
+              }
+            });
         li.mx-3.welcome-text
-          h3.mb-0.fw-bold.text-truncate Good Morning, James!
+          h3.mb-0.fw-bold.text-truncate Chào buổi sáng, Tấm iu
+            i.iconoir-heart-solid.text-danger.ms-1
           // <h6 class="mb-0 fw-normal text-muted text-truncate fs-14">Here's your overview this week.</h6>
       ul.topbar-item.list-unstyled.d-inline-flex.align-items-center.mb-0
         li.hide-phone.app-search
@@ -32,9 +55,16 @@
             )
             img.thumb-sm.rounded-circle(
               alt="" 
-              src="/admin/assets/images/flags/us_flag.jpg"
+              src="/admin/assets/images/flags/vn_flagcircle.jpg"
               )
           .dropdown-menu
+            a.dropdown-item(href="#")
+              img.me-2(
+                height="15" 
+                alt="" 
+                src="/admin/assets/images/flags/vn_flag.webp"
+                )
+              | Việt Nam
             a.dropdown-item(href="#")
               img.me-2(
                 height="15" 

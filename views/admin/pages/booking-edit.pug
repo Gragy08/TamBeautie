@@ -58,8 +58,8 @@ block main
             .mb-3
               label.form-label(for="description") Mô tả
               textarea.form-control(id="description" name="description") #{bookingDetail.description}
-        button.btn.btn-primary(type="submit") Tạo mới
-        a.btn.btn-danger.ms-1(href=`/${pathAdmin}/contact/view/${contactDetail._id}`) Hủy
+        button.btn.btn-primary(type="submit") Chỉnh sửa
+        a.btn.btn-secondary.ms-1(href=`/${pathAdmin}/contact/view/${contactDetail._id}`) Hủy
 
   script.
       const selectService = document.getElementById('name');

@@ -1,0 +1,82 @@
+/* Đổi background xanh lá sang hồng nhạt cho nav-link sidebar khi mở submenu */
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true] {
+  background-color: rgba(245, 157, 195, 0.08) !important;
+  border-radius: 10px;
+}
+/* Đổi màu xanh lá sang hồng cho :after sidebar nav-link khi mở submenu */
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true]:after {
+  color: #F59DC3 !important;
+}
+/* Đổi màu xanh lá sang hồng cho các ::before sidebar nav-link và iconoir */
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true]::before {
+  content: "";
+  border: 2px solid #F59DC3 !important;
+  background-color: #F59DC3 !important;
+}
+[class*=" iconoir-"]::before, [class^=iconoir-]::before {
+  background: #F59DC3 !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link.active::before,
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover::before {
+  border-color: #F59DC3 !important;
+  background-color: #F59DC3 !important;
+}
+/* Đổi màu xanh lá sang hồng cho nav-link sidebar khi mở submenu và ::before */
+.startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true] span {
+  color: #F59DC3 !important;
+  font-weight: 600;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true]::before {
+  content: "";
+  border: 2px solid #F59DC3 !important;
+  background-color: #F59DC3 !important;
+}
+/* Sidebar nav-link active/hover: đổi màu xanh lá sang hồng */
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link.active,
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover {
+  color: #F59DC3 !important;
+}
+:root {
+  --bs-primary: #F59DC3 !important;
+  --bs-primary-rgb: 245, 157, 195 !important;
+  --bs-primary-bg-subtle: rgba(245, 157, 195, 0.1) !important;
+  --bs-primary-border-subtle: #F59DC3 !important;
+  --bs-primary-text-emphasis: #F59DC3 !important;
+}
+/* Ghi đè trực tiếp các class Bootstrap thường dùng màu primary sang màu hồng */
+.bg-primary,
+.text-primary,
+.bg-primary-subtle,
+.badge.bg-primary,
+.badge.bg-primary-subtle,
+.btn-primary,
+.btn-outline-primary {
+  background-color: #F59DC3 !important;
+  color: #fff !important;
+  border-color: #F59DC3 !important;
+}
+.text-primary {
+  color: #F59DC3 !important;
+}
+.bg-primary-subtle,
+.badge.bg-primary-subtle {
+  background-color: rgba(245, 157, 195, 0.1) !important;
+  color: #F59DC3 !important;
+}
+.btn-primary,
+.btn-outline-primary,
+.text-bg-primary,
+.table-primary,
+.alert-primary,
+.list-group-item-primary,
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+  background-color: #F59DC3 !important;
+  border-color: #F59DC3 !important;
+  color: #fff !important;
+}
+.link-primary,
+.link-primary:focus,
+.link-primary:hover {
+  color: #F59DC3 !important;
+}

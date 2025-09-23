@@ -1,4 +1,6 @@
 .startbar.d-print-none
+  // Nhúng CSS ghi đè màu primary sang hồng
+  link(rel="stylesheet", href="/admin/assets/css/custom-bootstrap-override.css")
   // start brand
   .brand
     a.logo(href=`/${pathAdmin}/dashboard`)
@@ -11,10 +13,12 @@
         img.logo-lg.logo-light(
           alt="logo-large" 
           src="/admin/assets/images/logo-light.png"
+          style="width: 100px"
           )
         img.logo-lg.logo-dark(
           alt="logo-large" 
           src="/admin/assets/images/logo-dark.png"
+          style="width: 100px"
           )
   // end brand
   // start startbar-menu
