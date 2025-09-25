@@ -30,8 +30,10 @@ block main
                             th Đơn vị
                             th Ngày sử dụng dịch vụ
                             th Giá dịch vụ
+                            th Khuyến mãi
                             th Khách đã cọc
                             th Khách thanh toán
+                            th Tổng đơn khám
                             th Trạng thái
                             th.text-end Hành động
                     tbody
@@ -41,12 +43,26 @@ block main
                                 td #{index + 1}
                                 td #{item.contactName}
                                 td #{item.contactPhone}
-                                td #{item.name}
-                                td #{item.unit}
+                                td
+                                  if item.services && item.services.length > 0
+                                    ul.mb-0.list-unstyled
+                                      each sv in item.services
+                                        li #{sv.name}
+                                td
+                                  if item.services && item.services.length > 0
+                                    ul.mb-0.list-unstyled
+                                      each sv in item.services
+                                        li #{sv.unit}
                                 td #{item.formatedDate}
-                                td #{item.price}
-                                td 500
+                                td
+                                  if item.services && item.services.length > 0
+                                    ul.mb-0.list-unstyled
+                                      each sv in item.services
+                                        li #{sv.price}
+                                td #{item.promotion}
+                                td #{item.deposit}
                                 td #{item.pay}
+                                td #{item.total}
                                 td
                                     if (item.status == "success")
                                         span.badge.bg-success Hoàn thành

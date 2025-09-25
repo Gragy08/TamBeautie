@@ -155,8 +155,12 @@ module.exports.createPost = async (req, res) => {
       });
     }
 
+    console.log(services, req.body);
+
     const booking = {
       services,
+      promotion: parseFloat(req.body.promotion) || 0,
+      total: parseFloat(req.body.total) || 0,
       deposit: parseFloat(req.body.deposit) || 0,
       pay: parseFloat(req.body.pay) || 0,
       date: req.body.date,
@@ -220,37 +224,54 @@ module.exports.edit = async (req, res) => {
   }
 }
 module.exports.editPatch = async (req, res) => {
-    try {
-    const contactId = req.params.id;
-    // Tìm contact theo id
-    const contact = await Contact.findById(contactId);
-    if (!contact) {
-      res.json({ code: "error", message: "Không tìm thấy khách hàng!" });
-      return;
-    }
+  try {
+  const contactId = req.params.id;
+  // Tìm contact theo id
+  const contact = await Contact.findById(contactId);
+  if (!contact) {
+    res.json({ code: "error", message: "Không tìm thấy khách hàng!" });
+    return;
+  }
 
-    // Tìm booking trong mảng bookings
-    const bookingId = req.params.bookingId;
-    const booking = contact.bookings.id(bookingId) || contact.bookings.find(b => b._id && b._id.toString() === bookingId);
+  // Tìm booking trong mảng bookings
+  const bookingId = req.params.bookingId;
+  const booking = contact.bookings.id(bookingId) || contact.bookings.find(b => b._id && b._id.toString() === bookingId);
 
-    if (!booking) {
-      res.json({ code: "error", message: "Không tìm thấy đơn khám!" });
-      return;
-    }
+  if (!booking) {
+    res.json({ code: "error", message: "Không tìm thấy đơn khám!" });
+    return;
+  }
+
+  // Convert mảng song song -> array of objects
+  const services = [];
+  if (Array.isArray(req.body.name)) {
+    req.body.name.forEach((n, i) => {
+      services.push({
+        name: n,
+        price: parseFloat(req.body.price[i]) || 0,
+        unit: parseInt(req.body.unit[i]) || 1
+      });
+    });
+  }
 
   // Cập nhật các trường của booking
-  booking.name = req.body.name;
-  booking.price = req.body.price;
-  booking.unit = req.body.unit;
+  booking.services = services;
+  // booking.name = req.body.name;
+  // booking.price = req.body.price;
+  // booking.unit = req.body.unit;
+  booking.promotion = req.body.promotion;
+  booking.total = req.body.total;
   booking.deposit = req.body.deposit;
   booking.pay = req.body.pay;
   booking.date = req.body.date;
   booking.status = req.body.status;
   booking.description = req.body.description;
-  booking.search = slugify(`${req.body.name}`, {
-      replacement: " ",
-      lower: true
-    });
+  booking.search = slugify(req.body.name.join(" "), {
+    replacement: " ",
+    lower: true,
+    strict: true,
+    trim: true
+  });
 
   await contact.save();
 

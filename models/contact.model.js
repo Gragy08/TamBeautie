@@ -16,6 +16,8 @@ const schema = new mongoose.Schema(
             unit: Number
           }
         ],
+        promotion: Number,
+        total: Number,
         deposit: Number,
         pay: Number,
         date: Date,

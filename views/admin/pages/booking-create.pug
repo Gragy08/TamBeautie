@@ -19,26 +19,31 @@ block main
         //- Khối dịch vụ động
         .service-list
           .service-item
-            .row
-              .col-md-6.col-lg-6
+            .row.align-items-end
+              .col-md-5.col-lg-5
                 .mb-3
                   label.form-label Tên dịch vụ *
                   select.form-select(name="name[]").service-name
                     option(value="") -- Chọn dịch vụ --
                     each item in serviceList
                       option(value=item.name data-price=item.price) #{item.name}
-              .col-md-6.col-lg-6
+              .col-md-5.col-lg-5
                 .mb-3
-                  label.form-label Giá dịch vụ / Đơn vị *
+                  label.form-label Giá dịch vụ / Đơn vị (1cc-100unit-1 lọ-1 lần) / Tổng dịch vụ*
                   .input-group
                     input.form-control(type="text" name="price[]" placeholder="Giá dịch vụ").service-price
                     input.form-control(type="text" name="unit[]" placeholder="Đơn vị").service-unit
-              .col-md-2.col-lg-2.d-flex.align-items-end
-                .mb-3
-                  button.btn.btn-secondary.w-100.remove-service-btn(type="button") Xóa
+                    input.form-control(type="text" name="subTotal[]" placeholder="Tổng dịch vụ" readonly).service-subTotal
+              .col-md-2.col-lg-2
+                .mb-3.text-end
+                  button.btn.btn-secondary.w-100.remove-service-btn(type="button") Xóa dịch vụ
 
         //- Các input khác
         .row
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="promotion") Khuyến mãi
+              input.form-control(type="text" name="promotion" id="promotion")
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="deposit") Khách đã cọc
@@ -46,7 +51,11 @@ block main
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="pay") Khách thanh toán
-              input.form-control(type="text" name="pay" id="pay" readonly)
+              input.form-control(type="text" name="pay" id="pay")
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="total") Tổng giá đơn khám
+              input.form-control(type="text" name="total" id="total" readonly)
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="date") Ngày khám *
@@ -65,7 +74,7 @@ block main
               textarea.form-control(name="description" id="description")
 
         button.btn.btn-primary(type="submit") Tạo mới
-        button#addServiceBtn.btn.btn-primary.ms-1(type="button") Thêm dịch vụ
+        button#addServiceBtn.btn.btn-info.ms-1(type="button") Thêm dịch vụ
         a.btn.btn-secondary.ms-1(href=`/${pathAdmin}/contact/view/${contactDetail._id}`) Hủy
 
   script.
@@ -74,28 +83,91 @@ block main
       const addServiceBtn = document.getElementById("addServiceBtn");
       const depositInput = document.getElementById("deposit");
       const payInput = document.getElementById("pay");
+      const totalInput = document.getElementById("total");
+      const promotionInput = document.getElementById("promotion");
 
-      // Hàm tính tổng tất cả dịch vụ
-      function updateTotalPay() {
-        let total = 0;
+      // Hàm tính tổng tất cả dịch vụ: sum(price * unit)
+      function updateTotalPay({fromPayInput = false} = {}) {
+        let totalServices = 0;
         document.querySelectorAll(".service-item").forEach(item => {
           const price = parseFloat(item.querySelector(".service-price").value) || 0;
-          total += price;
+          const unit = parseFloat(item.querySelector(".service-unit").value) || 0;
+          const subTotal = price * unit;
+          const subTotalInput = item.querySelector("input[name='subTotal[]']");
+          if (subTotalInput) {
+            if (Number.isInteger(subTotal)) subTotalInput.value = subTotal;
+            else subTotalInput.value = +subTotal.toFixed(2);
+          }
+          totalServices += subTotal;
         });
-        const deposit = parseFloat(depositInput.value) || 0;
-        payInput.value = Math.max(total - deposit, 0);
+        const deposit = parseFloat(depositInput?.value) || 0;
+        const promotion = parseFloat(promotionInput?.value) || 0;
+        let totalExam = Math.max(totalServices - promotion, 0);
+        let pay = Math.max(totalServices - deposit - promotion, 0);
+        let payValue = parseFloat(payInput.value) || 0;
+        // Nếu đang nhập ở ô khách thanh toán
+        if (fromPayInput) {
+          if (payValue > pay) {
+            // Cập nhật lại tổng giá đơn khám = khách thanh toán + deposit + khuyến mãi
+            totalExam = payValue + deposit;
+            if (totalInput) {
+              if (Number.isInteger(totalExam)) totalInput.value = totalExam;
+              else totalInput.value = +totalExam.toFixed(2);
+            }
+          } else {
+            // Không báo lỗi khi đang nhập, chỉ cập nhật lại các ô khác
+            if (totalInput) {
+              if (Number.isInteger(totalExam)) totalInput.value = totalExam;
+              else totalInput.value = +totalExam.toFixed(2);
+            }
+          }
+        } else {
+          // Khi nhập các ô khác, luôn cập nhật lại pay đúng
+          if (payInput) {
+            if (Number.isInteger(pay)) payInput.value = pay;
+            else payInput.value = +pay.toFixed(2);
+          }
+          if (totalInput) {
+            if (Number.isInteger(totalExam)) totalInput.value = totalExam;
+            else totalInput.value = +totalExam.toFixed(2);
+          }
+        }
       }
 
-      // Hàm kiểm tra hiển thị nút xóa
-      function toggleRemoveButtons() {
-        const items = document.querySelectorAll(".service-item");
-        items.forEach(item => {
-          const removeBtn = item.querySelector(".remove-service-btn");
-          if (items.length > 1) {
-            removeBtn.style.display = "inline-block";
-          } else {
-            removeBtn.style.display = "none";
+      // Khi blur khỏi ô khách thanh toán, nếu nhỏ hơn số tiền cần thanh toán thì báo lỗi và set lại đúng giá trị
+      if (payInput) {
+        payInput.addEventListener("blur", function() {
+          let totalServices = 0;
+          document.querySelectorAll(".service-item").forEach(item => {
+            const price = parseFloat(item.querySelector(".service-price").value) || 0;
+            const unit = parseFloat(item.querySelector(".service-unit").value) || 0;
+            totalServices += price * unit;
+          });
+          const deposit = parseFloat(depositInput?.value) || 0;
+          const promotion = parseFloat(promotionInput?.value) || 0;
+          let pay = Math.max(totalServices - deposit - promotion, 0);
+          let payValue = parseFloat(payInput.value) || 0;
+          if (payValue < pay) {
+            if (typeof notyf !== 'undefined') {
+              notyf.error("Số tiền khách thanh toán không được nhỏ hơn số tiền cần thanh toán!");
+            } else {
+              alert("Số tiền khách thanh toán không được nhỏ hơn số tiền cần thanh toán!");
+            }
+            payInput.value = pay;
+            // Cập nhật lại tổng giá đơn khám
+            let totalExam = Math.max(totalServices - promotion, 0);
+            if (totalInput) {
+              if (Number.isInteger(totalExam)) totalInput.value = totalExam;
+              else totalInput.value = +totalExam.toFixed(2);
+            }
           }
+        });
+      }
+
+      // Luôn hiển thị nút xóa, nhưng chặn khi chỉ còn 1 mục
+      function toggleRemoveButtons() {
+        document.querySelectorAll(".service-item .remove-service-btn").forEach(btn => {
+          btn.style.display = "inline-block";
         });
       }
 
@@ -106,34 +178,46 @@ block main
         const unitInput = serviceItem.querySelector(".service-unit");
         const removeBtn = serviceItem.querySelector(".remove-service-btn");
 
-        selectService.addEventListener("change", function () {
-          const selectedOption = this.options[this.selectedIndex];
-          const basePrice = parseFloat(selectedOption.getAttribute("data-price")) || 0;
-          const unit = parseInt(unitInput.value) || 1;
-          priceInput.value = basePrice * unit;
-          updateTotalPay();
-        });
+        // khi chọn service -> set unit price từ data-price
+        if (selectService) {
+          selectService.addEventListener("change", function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const basePrice = parseFloat(selectedOption?.getAttribute("data-price")) || 0;
+            priceInput.value = basePrice || "";
+            updateTotalPay();
+          });
+        }
 
-        unitInput.addEventListener("input", function () {
-          const selectedOption = selectService.options[selectService.selectedIndex];
-          const basePrice = parseFloat(selectedOption.getAttribute("data-price")) || 0;
-          const unit = parseFloat(unitInput.value) || 1;
-          priceInput.value = basePrice * unit;
-          updateTotalPay();
-        });
+        // thay đổi đơn vị -> recalc
+        if (unitInput) {
+          unitInput.addEventListener("input", updateTotalPay);
+        }
 
-        priceInput.addEventListener("input", updateTotalPay);
-        depositInput.addEventListener("input", updateTotalPay);
+        // sửa trực tiếp price -> recalc
+        if (priceInput) {
+          priceInput.addEventListener("input", updateTotalPay);
+        }
 
         // sự kiện xóa dịch vụ
-        removeBtn.addEventListener("click", () => {
-          serviceItem.remove();
-          updateTotalPay();
-          toggleRemoveButtons();
-        });
+        if (removeBtn) {
+          removeBtn.addEventListener("click", () => {
+            const items = document.querySelectorAll(".service-item");
+            if (items.length <= 1) {
+              if (typeof notyf !== 'undefined') {
+                notyf.error("Phải có ít nhất 1 dịch vụ, không thể xóa hết!");
+              } else {
+                alert("Phải có ít nhất 1 dịch vụ, không thể xóa hết!");
+              }
+              return;
+            }
+            serviceItem.remove();
+            updateTotalPay();
+            toggleRemoveButtons();
+          });
+        }
       }
 
-      // Gắn cho item đầu tiên
+      // Gắn events cho các item hiện có
       document.querySelectorAll(".service-item").forEach(item => attachEvents(item));
 
       // Thêm dịch vụ mới
@@ -141,16 +225,35 @@ block main
         const firstService = document.querySelector(".service-item");
         const newService = firstService.cloneNode(true);
 
-        // reset value
-        newService.querySelector(".service-name").selectedIndex = 0;
-        newService.querySelector(".service-price").value = "";
-        newService.querySelector(".service-unit").value = "";
+        // reset giá trị khi clone
+        const sel = newService.querySelector(".service-name");
+        const priceEl = newService.querySelector(".service-price");
+        const unitEl = newService.querySelector(".service-unit");
+        const subTotalEl = newService.querySelector("input[name='subTotal[]']");
+
+        if (sel) sel.selectedIndex = 0;
+        if (priceEl) priceEl.value = "";
+        if (unitEl) unitEl.value = "1";
+        if (subTotalEl) subTotalEl.value = "";
 
         serviceList.appendChild(newService);
         attachEvents(newService);
         toggleRemoveButtons();
+        updateTotalPay();
       });
 
-      // khởi tạo ẩn nút xóa nếu chỉ có 1 dịch vụ
+      // Gắn sự kiện khuyến mãi & deposit & pay
+      if (promotionInput) {
+        promotionInput.addEventListener("input", function() { updateTotalPay(); });
+      }
+      if (depositInput) {
+        depositInput.addEventListener("input", function() { updateTotalPay(); });
+      }
+      if (payInput) {
+        payInput.addEventListener("input", function() { updateTotalPay({fromPayInput: true}); });
+      }
+
+      // init
       toggleRemoveButtons();
+      updateTotalPay();
     });

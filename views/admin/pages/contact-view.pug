@@ -83,8 +83,10 @@ block main
                   th Đơn vị
                   th Ngày khám
                   th Giá dịch vụ
+                  th Khuyến mãi
                   th Khách đã cọc
                   th Khách thanh toán
+                  th Tổng đơn khám
                   th Trạng thái
                   th.text-end Hành động
               tbody
@@ -108,8 +110,10 @@ block main
                           ul.mb-0.list-unstyled
                             each sv in item.services
                               li #{sv.price}
+                      td #{item.promotion}
                       td #{item.deposit}
                       td #{item.pay}
+                      td #{item.total}
                       td
                         if (item.status == "success")
                           span.badge.bg-success Hoàn thành
