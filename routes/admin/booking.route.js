@@ -32,4 +32,6 @@ router.delete('/destroy/:id/:bookingId', bookingController.destroyBookingDelete)
 
 router.patch('/bulk-status', bookingController.bulkStatusPatch);
 
+router.get('/view/:id/:bookingId', bookingController.view)
+
 module.exports = router;

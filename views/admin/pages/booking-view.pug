@@ -1,0 +1,119 @@
+extends ../layouts/default.pug
+
+block main
+  .card
+    .card-header
+      .row.align-items-center
+        .col
+          h4.card-title
+            | #{pageTitle} của 
+            span(style="color: #e83e8c") #{contactDetail.fullName}
+    .card-body.pt-0
+      form#bookingEditForm
+        .row
+          .col-md-6.col-lg-6.d-none
+            .mb-3
+              label.form-label(for="id_customer") Id khách *
+              input.form-control(id="id_customer" type="text" name="id_customer" value=contactDetail._id)
+          .col-md-6.col-lg-6.d-none
+            .mb-3
+              label.form-label(for="id_booking") Id *
+              input.form-control(id="id_booking" type="text" name="id_booking" value=bookingDetail._id)
+
+        //- Khối dịch vụ động
+        .service-list
+          each service, index in bookingDetail.services
+            .service-item
+              .row.align-items-end
+                .col-md-6.col-lg-6
+                  .mb-3
+                    label.form-label Tên dịch vụ *
+                    select.form-select(name="name[]" disabled).service-name
+                      option(value="") -- Chọn dịch vụ --
+                      each item in serviceList
+                        option(
+                          value=item.name 
+                          data-price=item.price 
+                          selected=(item.name == service.name ? true : false)
+                        ) #{item.name}
+                .col-md-6.col-lg-6
+                  .mb-3
+                    label.form-label Giá dịch vụ / Đơn vị (1cc-100unit-1 lọ-1 lần) / Tổng dịch vụ*
+                    .input-group
+                      input.form-control.service-price(
+                        type="text" 
+                        name="price[]" 
+                        value=service.price 
+                        placeholder="Giá dịch vụ"
+                        readonly
+                      )
+                      input.form-control.service-unit(
+                        type="text" 
+                        name="unit[]" 
+                        value=service.unit 
+                        placeholder="Đơn vị"
+                        readonly
+                      )
+                      input.form-control.service-unit(
+                        type="text" name="subTotal[]" placeholder="Tổng dịch vụ" readonly
+                      ).service-subTotal
+                //- .col-md-2.col-lg-2
+                //-   .mb-3.text-end
+                //-     button.btn.btn-secondary.w-100.remove-service-btn(type="button") Xóa dịch vụ
+
+        //- Các input khác
+        .row
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="promotion") Khuyến mãi
+              input.form-control(type="text" name="promotion" id="promotion" value=bookingDetail.promotion readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="deposit") Khách đã cọc
+              input.form-control(type="text" name="deposit" id="deposit" value=bookingDetail.deposit readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="pay") Khách thanh toán
+              input.form-control(type="text" name="pay" id="pay" value=bookingDetail.pay readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="total") Tổng giá đơn khám
+              input.form-control(type="text" name="total" id="total" value=bookingDetail.total readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="date") Ngày khám *
+              input.form-control(type="date" name="date" id="date" value=bookingDetail.dateFormatted readonly)
+          .col-md-6.col-lg-6
+            .mb-3
+              label.form-label(for="status") Trạng thái
+              select.form-select(name="status" id="status" disabled)
+                option(value="unsuccess" selected=(bookingDetail.status=="unsuccess")) Chưa Hoàn thành
+                option(value="success" selected=(bookingDetail.status=="success")) Hoàn thành
+                option(value="guarantee" selected=(bookingDetail.status=="guarantee")) Bảo hành
+                option(value="cancel" selected=(bookingDetail.status=="cancel")) Hủy
+          .col-md-12.col-lg-12
+            .mb-3
+              label.form-label(for="description") Mô tả
+              textarea.form-control(name="description" id="description" readonly) #{bookingDetail.description}
+
+        button.btn.btn-primary(type="submit") Cập nhật
+        button#addServiceBtn.btn.btn-info.ms-1(type="button") Thêm dịch vụ
+        a.btn.btn-secondary.ms-1(href=`/${pathAdmin}/contact/view/${contactDetail._id}`) Hủy
+
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        // Lặp qua từng service-item
+        document.querySelectorAll('.service-item').forEach(function(item) {
+          var priceInput = item.querySelector('.service-price');
+          var unitInput = item.querySelector('.service-unit');
+          var subTotalInput = item.querySelector('.service-subTotal');
+          if (priceInput && unitInput && subTotalInput) {
+            // Lấy giá trị số, fallback 0 nếu không hợp lệ
+            var price = parseFloat(priceInput.value.replace(/[^\d.]/g, '')) || 0;
+            var unit = parseFloat(unitInput.value.replace(/[^\d.]/g, '')) || 0;
+            var subTotal = price * unit;
+            // Hiển thị tối đa 2 số thập phân nếu cần
+            subTotalInput.value = subTotal % 1 === 0 ? subTotal : subTotal.toFixed(2);
+          }
+        });
+      });

@@ -124,7 +124,7 @@ block main
                         else if (item.status == "cancel")
                           span.badge.bg-danger Hủy
                       td.text-end
-                        a(href="#" style="font-size: 20px")
+                        a(href=`/${pathAdmin}/booking/view/${contactDetail._id}/${item._id}` style="font-size: 20px")
                             i.las.la-eye.text-info.font-16.me-1
                         a(href=`/${pathAdmin}/booking/edit/${contactDetail._id}/${item._id}` style="font-size: 20px")
                             i.las.la-pen.text-warning.font-16.me-1

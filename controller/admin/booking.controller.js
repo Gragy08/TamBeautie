@@ -440,3 +440,43 @@ module.exports.bulkStatusPatch = async (req, res) => {
     res.json({ code: "error", message: "Có lỗi xảy ra!" });
   }
 }
+
+module.exports.view = async (req, res) => {
+  try {
+    const contactId = req.params.id;
+    const bookingId = req.params.bookingId;
+
+    // Tìm contact
+    const contact = await Contact.findById(contactId);
+    if (!contact) {
+      res.redirect(`/${pathAdmin}/contact/list`);
+      return;
+    }
+
+    // Tìm booking trong mảng bookings
+    const bookingDetail = contact.bookings.id(bookingId) || contact.bookings.find(b => b._id && b._id.toString() === bookingId);
+    if (!bookingDetail) {
+      res.redirect(`/${pathAdmin}/contact/view/${contactId}`);
+      return;
+    }
+
+    // Format lại ngày nếu có
+    let bookingObj = bookingDetail.toObject ? bookingDetail.toObject() : {...bookingDetail};
+    if (bookingObj.date) {
+      bookingObj.dateFormatted = moment(bookingObj.date).format("YYYY-MM-DD");
+    }
+
+    const serviceList = await Service.find({
+        deleted: false
+    })
+
+    res.render("admin/pages/booking-view", {
+      pageTitle: "Xem chi tiết đơn khám",
+      contactDetail: contact.toObject(),
+      bookingDetail: bookingObj,
+      serviceList: serviceList
+    });
+  } catch (error) {
+    res.redirect(`/${pathAdmin}/contact/list`);
+  }
+}
