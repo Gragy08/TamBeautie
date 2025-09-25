@@ -19,7 +19,7 @@ block main
                 href=`/${pathAdmin}/contact/create`
                 )
                 i.fa-solid.fa-plus.me-1
-                | Tạo Liên hệ mới
+                | Tạo Khách hàng mới
           // end row
         // end card-header
         .card-body.pt-0
@@ -58,7 +58,13 @@ block main
                       td #{item.fullName}
                       td #{item.phone}
                       td #{item.dob}
-                      td #{latestBooking ? latestBooking.name : '-'}
+                      td
+                        if latestBooking
+                          ul(style="list-style: none; padding: 0; margin: 0;")
+                            each service in latestBooking.services
+                              li #{service.name}
+                        else
+                          | -
                       td #{latestBooking && latestBooking.date ? (new Date(latestBooking.date)).toLocaleDateString('vi-VN') : '-'}
                       //- td
                       //-   if (item.sex == "male")

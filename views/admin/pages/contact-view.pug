@@ -55,7 +55,7 @@ block main
                 href=`/${pathAdmin}/booking/list/trash/${contactDetail._id}`
                 )
                 i.las.la-trash-alt.me-1
-                | Thùng rác lịch khám
+                | Thùng rác Lịch khám
               a.btn.btn-primary(
                 href=`/${pathAdmin}/booking/create/${contactDetail._id}`
                 )
@@ -92,10 +92,22 @@ block main
                   each item, index in bookingList
                     tr
                       td #{pagination.skip + index + 1}
-                      td #{item.name}
-                      td #{item.unit}
+                      td
+                        if item.services && item.services.length > 0
+                          ul.mb-0.list-unstyled
+                            each sv in item.services
+                              li #{sv.name}
+                      td
+                        if item.services && item.services.length > 0
+                          ul.mb-0.list-unstyled
+                            each sv in item.services
+                              li #{sv.unit}
                       td #{item.dateFormatted}
-                      td #{item.price}
+                      td
+                        if item.services && item.services.length > 0
+                          ul.mb-0.list-unstyled
+                            each sv in item.services
+                              li #{sv.price}
                       td #{item.deposit}
                       td #{item.pay}
                       td
