@@ -143,13 +143,35 @@ module.exports.createPost = async (req, res) => {
       return;
     }
 
-    req.body.search = slugify(`${req.body.name}`, {
-      replacement: " ",
-      lower: true
-    });
+    // Convert mảng song song -> array of objects
+    const services = [];
+    if (Array.isArray(req.body.name)) {
+      req.body.name.forEach((n, i) => {
+        services.push({
+          name: n,
+          price: parseFloat(req.body.price[i]) || 0,
+          unit: parseInt(req.body.unit[i]) || 1
+        });
+      });
+    }
+
+    const booking = {
+      services,
+      deposit: parseFloat(req.body.deposit) || 0,
+      pay: parseFloat(req.body.pay) || 0,
+      date: req.body.date,
+      status: req.body.status,
+      description: req.body.description,
+      search: slugify(req.body.name.join(" "), {
+        replacement: " ",
+        lower: true,
+        strict: true,
+        trim: true
+      })
+    };
 
     // Thêm booking mới vào mảng bookings
-    contact.bookings.push(req.body);
+    contact.bookings.push(booking);
     await contact.save();
 
     res.json({ code: "success", message: "Tạo đơn khám thành công!" });

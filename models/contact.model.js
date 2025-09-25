@@ -12,12 +12,12 @@ const schema = new mongoose.Schema(
         services: [
           {
             name: String,
-            price: String,
-            unit: String
+            price: Number,
+            unit: Number
           }
         ],
-        deposit: String,
-        pay: String,
+        deposit: Number,
+        pay: Number,
         date: Date,
         status: {
           type: String,
