@@ -9,40 +9,52 @@ block main
             | #{pageTitle} của 
             span(style="color: #e83e8c") #{contactDetail.fullName}
     .card-body.pt-0
-      form(id="bookingCreateForm")
+      form#bookingCreateForm
         .row
           .col-md-6.col-lg-6.d-none
             .mb-3
               label.form-label(for="id") Id *
-              input.form-control(id="id" type="text" name="id" value=contactDetail._id)
-          .col-md-6.col-lg-6
-            .mb-3
-              label.form-label(for="name") Tên dịch vụ *
-                select.form-select(id="name" name="name")
-                  each item in serviceList
-                    option(value=item.name data-price=item.price) #{item.name}
-          .col-md-6.col-lg-6
-            .mb-3
-              label.form-label Giá dịch vụ / Đơn vị *
-              .input-group
-                input.form-control(id="price" type="text" name="price" placeholder="Giá dịch vụ")
-                input.form-control(id="unit" type="text" name="unit" placeholder="Đơn vị")
+              input.form-control(type="text" name="id" value=contactDetail._id)
+
+        //- Khối dịch vụ động
+        .service-list
+          .service-item
+            .row
+              .col-md-6.col-lg-6
+                .mb-3
+                  label.form-label Tên dịch vụ *
+                  select.form-select(name="name[]").service-name
+                    option(value="") -- Chọn dịch vụ --
+                    each item in serviceList
+                      option(value=item.name data-price=item.price) #{item.name}
+              .col-md-6.col-lg-6
+                .mb-3
+                  label.form-label Giá dịch vụ / Đơn vị *
+                  .input-group
+                    input.form-control(type="text" name="price[]" placeholder="Giá dịch vụ").service-price
+                    input.form-control(type="text" name="unit[]" placeholder="Đơn vị").service-unit
+              .col-md-2.col-lg-2.d-flex.align-items-end
+                .mb-3
+                  button.btn.btn-secondary.w-100.remove-service-btn(type="button") Xóa
+
+        //- Các input khác
+        .row
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="deposit") Khách đã cọc
-              input.form-control(id="deposit" type="text" name="deposit")
+              input.form-control(type="text" name="deposit" id="deposit")
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="pay") Khách thanh toán
-              input.form-control(id="pay" type="text" name="pay")
+              input.form-control(type="text" name="pay" id="pay" readonly)
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="date") Ngày khám *
-              input.form-control(id="date" type="date" name="date")
+              input.form-control(type="date" name="date" id="date")
           .col-md-6.col-lg-6
             .mb-3
               label.form-label(for="status") Trạng thái
-              select.form-select(id="status" name="status")
+              select.form-select(name="status" id="status")
                 option(value="unsuccess") Chưa Hoàn thành
                 option(value="success") Hoàn thành
                 option(value="guarantee") Bảo hành
@@ -50,46 +62,95 @@ block main
           .col-md-12.col-lg-12
             .mb-3
               label.form-label(for="description") Mô tả
-              textarea.form-control(id="description" name="description")
+              textarea.form-control(name="description" id="description")
+
         button.btn.btn-primary(type="submit") Tạo mới
+        button#addServiceBtn.btn.btn-primary.ms-1(type="button") Thêm dịch vụ
         a.btn.btn-secondary.ms-1(href=`/${pathAdmin}/contact/view/${contactDetail._id}`) Hủy
 
   script.
-      const selectService = document.getElementById('name');
-      const priceInput = document.getElementById('price');
-      const depositInput = document.getElementById('deposit');
-      const payInput = document.getElementById('pay');
-      const unitInput = document.getElementById('unit');
-      selectService.addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        const basePrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
-        const unit = parseInt(unitInput.value) || 1;
-        priceInput.value = basePrice * unit;
-        // Khi chọn dịch vụ mới, reset deposit và pay
-        depositInput.value = '';
-        payInput.value = priceInput.value;
-      });
-      unitInput.addEventListener('input', function() {
-        const selectedOption = selectService.options[selectService.selectedIndex];
-        const basePrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
-        const unit = parseFloat(unitInput.value) || 1;
-        priceInput.value = basePrice * unit;
-        // Khi thay đổi đơn vị, cập nhật lại pay
+    document.addEventListener("DOMContentLoaded", () => {
+      const serviceList = document.querySelector(".service-list");
+      const addServiceBtn = document.getElementById("addServiceBtn");
+      const depositInput = document.getElementById("deposit");
+      const payInput = document.getElementById("pay");
+
+      // Hàm tính tổng tất cả dịch vụ
+      function updateTotalPay() {
+        let total = 0;
+        document.querySelectorAll(".service-item").forEach(item => {
+          const price = parseFloat(item.querySelector(".service-price").value) || 0;
+          total += price;
+        });
         const deposit = parseFloat(depositInput.value) || 0;
-        payInput.value = priceInput.value - deposit;
-      });
-      priceInput.addEventListener('input', function() {
-        // Khi giá thay đổi, cập nhật lại pay nếu có deposit
-        const price = parseFloat(priceInput.value) || 0;
-        const deposit = parseFloat(depositInput.value) || 0;
-        payInput.value = price - deposit;
-      });
-      depositInput.addEventListener('input', function() {
-        const price = parseFloat(priceInput.value) || 0;
-        const deposit = parseFloat(depositInput.value) || 0;
-        payInput.value = price - deposit;
-      });
-      // Khi load trang, nếu có giá thì set pay ban đầu
-      if(priceInput.value) {
-        payInput.value = priceInput.value;
+        payInput.value = Math.max(total - deposit, 0);
       }
+
+      // Hàm kiểm tra hiển thị nút xóa
+      function toggleRemoveButtons() {
+        const items = document.querySelectorAll(".service-item");
+        items.forEach(item => {
+          const removeBtn = item.querySelector(".remove-service-btn");
+          if (items.length > 1) {
+            removeBtn.style.display = "inline-block";
+          } else {
+            removeBtn.style.display = "none";
+          }
+        });
+      }
+
+      // Gắn sự kiện cho 1 service-item
+      function attachEvents(serviceItem) {
+        const selectService = serviceItem.querySelector(".service-name");
+        const priceInput = serviceItem.querySelector(".service-price");
+        const unitInput = serviceItem.querySelector(".service-unit");
+        const removeBtn = serviceItem.querySelector(".remove-service-btn");
+
+        selectService.addEventListener("change", function () {
+          const selectedOption = this.options[this.selectedIndex];
+          const basePrice = parseFloat(selectedOption.getAttribute("data-price")) || 0;
+          const unit = parseInt(unitInput.value) || 1;
+          priceInput.value = basePrice * unit;
+          updateTotalPay();
+        });
+
+        unitInput.addEventListener("input", function () {
+          const selectedOption = selectService.options[selectService.selectedIndex];
+          const basePrice = parseFloat(selectedOption.getAttribute("data-price")) || 0;
+          const unit = parseFloat(unitInput.value) || 1;
+          priceInput.value = basePrice * unit;
+          updateTotalPay();
+        });
+
+        priceInput.addEventListener("input", updateTotalPay);
+        depositInput.addEventListener("input", updateTotalPay);
+
+        // sự kiện xóa dịch vụ
+        removeBtn.addEventListener("click", () => {
+          serviceItem.remove();
+          updateTotalPay();
+          toggleRemoveButtons();
+        });
+      }
+
+      // Gắn cho item đầu tiên
+      document.querySelectorAll(".service-item").forEach(item => attachEvents(item));
+
+      // Thêm dịch vụ mới
+      addServiceBtn.addEventListener("click", () => {
+        const firstService = document.querySelector(".service-item");
+        const newService = firstService.cloneNode(true);
+
+        // reset value
+        newService.querySelector(".service-name").selectedIndex = 0;
+        newService.querySelector(".service-price").value = "";
+        newService.querySelector(".service-unit").value = "";
+
+        serviceList.appendChild(newService);
+        attachEvents(newService);
+        toggleRemoveButtons();
+      });
+
+      // khởi tạo ẩn nút xóa nếu chỉ có 1 dịch vụ
+      toggleRemoveButtons();
+    });

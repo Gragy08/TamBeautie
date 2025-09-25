@@ -9,9 +9,13 @@ const schema = new mongoose.Schema(
     description: String,
     bookings: [
       {
-        name: String,
-        price: String,
-        unit: String,
+        services: [
+          {
+            name: String,
+            price: String,
+            unit: String
+          }
+        ],
         deposit: String,
         pay: String,
         date: Date,

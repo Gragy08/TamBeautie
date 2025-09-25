@@ -366,46 +366,96 @@ if(bookingCreateForm) {
   const validator = new JustValidate('#bookingCreateForm');
 
   validator
-    .addField('#name', [
-      {
-        rule: 'required',
-        errorMessage: 'Vui lòng nhập tên dịch vụ!',
-      },
-    ])
-    .addField('#price', [
-      {
-        rule: 'required',
-        errorMessage: 'Vui lòng nhập giá của dịch vụ!',
-      },
-    ])
-    .addField('#unit', [
-      {
-        rule: 'required',
-        errorMessage: 'Vui lòng nhập đơn vị của dịch vụ!',
-      },
-    ])
     .addField('#date', [
       {
         rule: 'required',
         errorMessage: 'Vui lòng nhập ngày khám của dịch vụ!',
       },
     ])
-    .onSuccess((event) => {
+
+    // ✅ Hàm gắn validate cho tất cả service-item
+    function addServiceValidation() {
+      document.querySelectorAll(".service-item").forEach((item, index) => {
+        const nameInput = item.querySelector(".service-name");
+        const priceInput = item.querySelector(".service-price");
+        const unitInput = item.querySelector(".service-unit");
+
+        // để mỗi input có selector unique (bằng name + index)
+        nameInput.setAttribute("data-validate", `service-name-${index}`);
+        priceInput.setAttribute("data-validate", `service-price-${index}`);
+        unitInput.setAttribute("data-validate", `service-unit-${index}`);
+
+        validator
+          .addField(`[data-validate="service-name-${index}"]`, [
+            {
+              rule: 'required',
+              errorMessage: 'Vui lòng chọn tên dịch vụ!',
+            },
+          ])
+          .addField(`[data-validate="service-price-${index}"]`, [
+            {
+              rule: 'required',
+              errorMessage: 'Vui lòng nhập giá dịch vụ!',
+            },
+            {
+              rule: 'number',
+              errorMessage: 'Giá phải là số!',
+            },
+          ])
+          .addField(`[data-validate="service-unit-${index}"]`, [
+            {
+              rule: 'required',
+              errorMessage: 'Vui lòng nhập đơn vị!',
+            },
+          ]);
+      });
+    }
+
+    // Gắn validate ban đầu
+    addServiceValidation();
+
+    // Khi thêm dịch vụ mới thì gắn validate cho nó
+    document.getElementById("addServiceBtn").addEventListener("click", () => {
+      setTimeout(() => addServiceValidation(), 0); // đợi clone xong rồi mới gắn
+    });
+
+    validator.onSuccess((event) => {
       const id = event.target.id.value;
-      const name = event.target.name.value;
-      const price = event.target.price.value;
-      const unit = event.target.unit.value;
+      // const name = event.target.name.value;
+      // const price = event.target.price.value;
+      // const unit = event.target.unit.value;
       const deposit = event.target.deposit.value;
-      const pay = event.target.pay.value;
+      const payFE = event.target.pay.value;
       const date = event.target.date.value;
       const status = event.target.status.value;
       const description = event.target.description.value;
 
+      // Lấy danh sách dịch vụ
+      const serviceItems = bookingCreateForm.querySelectorAll(".service-item");
+
+      let totalPrice = 0;
       // Tạo formData
       const formData = new FormData();
-      formData.append("name", name);
-      formData.append("price", price);
-      formData.append("unit", unit);
+
+      serviceItems.forEach(item => {
+        const name = item.querySelector(".service-name").value;
+        const price = item.querySelector(".service-price").value;
+        const unit = item.querySelector(".service-unit").value;
+
+        totalPrice += parseFloat(price || 0);
+
+        formData.append("name[]", name);
+        formData.append("price[]", price);
+        formData.append("unit[]", unit);
+      });
+
+      // Tính số tiền khách phải trả = tổng dịch vụ - tiền cọc
+      const pay = totalPrice - parseFloat(deposit || 0);
+      console.log({ totalPrice, payFE, pay });
+
+      // formData.append("name", name);
+      // formData.append("price", price);
+      // formData.append("unit", unit);
       formData.append("deposit", deposit);
       formData.append("pay", pay);
       formData.append("date", date);
