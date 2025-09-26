@@ -58,58 +58,60 @@ block main
                   th.text-end Hành động
               tbody
                 if(bookingList.length > 0)
-                  each item, index in bookingList
-                    tr
-                      td
-                        input(type="checkbox" name="bookingIds" value=item._id)
-                      td #{pagination.skip + index + 1}
-                      td #{item.contactName}
-                      td #{item.contactPhone}
-                      td
-                        if item.services && item.services.length > 0
-                          ul.mb-0.list-unstyled
-                            each sv in item.services
-                              li #{sv.name}
-                      td
-                        if item.services && item.services.length > 0
-                          ul.mb-0.list-unstyled
-                            each sv in item.services
-                              li #{sv.unit}
-                      td #{item.formatedDate}
-                      td
-                        if item.services && item.services.length > 0
-                          ul.mb-0.list-unstyled
-                            each sv in item.services
-                              li #{sv.price}
-                      td  #{item.promotion}
-                      td #{item.deposit}
-                      td #{item.pay}
-                      td #{item.total}
-                      td
-                        if (item.status == "success")
-                          span.badge.bg-success Hoàn thành
-                        if (item.status == "unsuccess")
-                          span.badge.bg-secondary Chưa Hoàn thành
-                        else if (item.status == "guarantee")
-                          span.badge.bg-warning Bảo hành
-                        else if (item.status == "cancel")
-                          span.badge.bg-danger Hủy
-                      td.text-end
-                        a(href=`/${pathAdmin}/booking/view/${item.contactId}/${item._id}` style="font-size: 20px")
+                  tbody
+                    each item, index in bookingList
+                      tr
+                        td
+                          input(type="checkbox" name="bookingIds" value=item._id)
+                        td #{pagination.skip + index + 1}
+                        td #{item.contactName}
+                        td #{item.contactPhone}
+                        td
+                          if item.services && item.services.length > 0
+                            ul.mb-0.list-unstyled
+                              each sv in item.services
+                                li #{sv.name}
+                        td
+                          if item.services && item.services.length > 0
+                            ul.mb-0.list-unstyled
+                              each sv in item.services
+                                li #{sv.unit}
+                        td #{item.formatedDate}
+                        td
+                          if item.services && item.services.length > 0
+                            ul.mb-0.list-unstyled
+                              each sv in item.services
+                                li #{sv.price}
+                        td  #{item.promotion}
+                        td #{item.deposit}
+                        td #{item.pay}
+                        td #{item.total}
+                        td
+                          if (item.status == "success")
+                            span.badge.bg-success Hoàn thành
+                          if (item.status == "unsuccess")
+                            span.badge.bg-secondary Chưa Hoàn thành
+                          else if (item.status == "guarantee")
+                            span.badge.bg-warning Bảo hành
+                          else if (item.status == "cancel")
+                            span.badge.bg-danger Hủy
+                        td.text-end
+                          a(href=`/${pathAdmin}/booking/view/${item.contactId}/${item._id}` style="font-size: 20px")
                             i.las.la-eye.text-info.font-16.me-1
-                        a(href=`/${pathAdmin}/booking/edit/${item.contactId}/${item._id}` style="font-size: 20px")
+                          a(href=`/${pathAdmin}/booking/edit/${item._id}` style="font-size: 20px")
                             i.las.la-pen.text-warning.font-16.me-1
-                        a(
+                          a(
                             href="javascript:;"
                             button-api
                             data-method="PATCH"
-                            data-api=`/${pathAdmin}/booking/delete/${item.contactId}/${item._id}`
+                            data-api=`/${pathAdmin}/booking/delete/${item._id}`
                             style="font-size: 20px"
                             )
                             i.las.la-trash-alt.text-danger.font-16
                 else
-                  tr
-                    td(colspan="12" class="text-center") Không tìm thấy dữ liệu
+                  tbody
+                    tr
+                      td(colspan="12" class="text-center") Không tìm thấy dữ liệu
           .row.mt-3
             .col-lg-2.col-md-3.col-6
               select.form-select(pagination)

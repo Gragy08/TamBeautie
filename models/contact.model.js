@@ -9,30 +9,8 @@ const schema = new mongoose.Schema(
     description: String,
     bookings: [
       {
-        services: [
-          {
-            name: String,
-            price: Number,
-            unit: Number
-          }
-        ],
-        promotion: Number,
-        total: Number,
-        deposit: Number,
-        pay: Number,
-        date: Date,
-        status: {
-          type: String,
-          enum: ["success", "unsuccess", "guarantee", "cancel"],
-          default: "unsuccess"
-        },
-        description: String,
-        deleted: {
-          type: Boolean,
-          default: false
-        },
-        search: String,
-        deletedAt: Date
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Booking'
       }
     ],
     deleted: {

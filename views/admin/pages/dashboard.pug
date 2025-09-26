@@ -11,15 +11,21 @@ block main
           .row
             .col-md-3
               h5 Tổng doanh thu
-              p.mb-2.text-success.fs-4 #{totalRevenue.toLocaleString('vi-VN')} ₫
+              p.mb-2.text-success.fs-4 #{totalRevenue.toLocaleString('vi-VN')}.000.₫
+            .col-md-3
+              h5 Tổng số đơn khám
+              p.mb-2.text-dark.fs-4.fw-bold #{totalBookings}
             .col-md-3
               h5 Top 5 dịch vụ best seller
               ul.mb-2
                 each sv in topServices
                   li #{sv.name} (#{sv.count} lần)
             .col-md-3
-              h5 Tổng số đơn khám
-              p.mb-2.text-dark.fs-4.fw-bold #{totalBookings}
+              h5 Top 5 khách hàng thân thiết
+              ul.mb-2
+                each cus in topCustomers
+                  li #{cus.fullName} (#{cus.phone}) - #{cus.count} đơn
+                      
   // Thống kê tổng hợp tháng này
   .row.mb-4
     .col-md-12
@@ -30,12 +36,7 @@ block main
           .row
             .col-md-3
               h5 Doanh thu tháng
-              p.mb-2.text-success.fs-4 #{monthlyRevenue.toLocaleString('vi-VN')} ₫
-            .col-md-3
-              h5 Top 5 dịch vụ
-              ul.mb-2
-                each sv in topServices
-                  li #{sv.name} (#{sv.count} lần)
+              p.mb-2.text-success.fs-4 #{monthlyRevenue.toLocaleString('vi-VN')}.000.₫
             .col-md-3
               h5 Khách sinh nhật tháng này
               if birthdayCustomers.length
@@ -45,7 +46,12 @@ block main
               else
                 p.text-muted Không có khách nào
             .col-md-3
-              h5 Đơn khám tháng này
+              h5 Top 5 dịch vụ
+              ul.mb-2
+                each sv in topServices
+                  li #{sv.name} (#{sv.count} lần)
+            .col-md-3
+              h5 Đơn khám 7 ngày gần nhất
               if bookingsThisMonth.length
                 ul.mb-2
                   each b in bookingsThisMonth
@@ -74,7 +80,7 @@ block main
             .col-md-6
               .d-flex.flex-column.align-items-end
                 h6 Tổng doanh thu toàn bộ:
-                h4.text-success.mb-1 #{totalRevenue.toLocaleString('vi-VN')} ₫
+                h4.text-success.mb-1 #{totalRevenue.toLocaleString('vi-VN')}.000 ₫
                 h6 Tổng số đơn khám toàn bộ:
                 h4.mb-2.text-dark.fs-4.fw-bold #{totalBookings}
     .col-md-12.col-lg-4
@@ -136,7 +142,7 @@ block main
                     td #{b.customerName}
                     td #{b.customerPhone}
                     td #{b.date ? (new Date(b.date)).toLocaleDateString('vi-VN') : ''}
-                    td #{b.pay ? b.pay.toLocaleString('vi-VN') + ' ₫' : ''}
+                    td #{b.pay ? b.pay.toLocaleString('vi-VN') + '.000' + ' ₫' : ''}
           else
             p.text-muted Không có đơn khám nào
 

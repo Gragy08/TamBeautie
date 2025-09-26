@@ -73,23 +73,23 @@ block main
                                     else if (item.status == "cancel")
                                         span.badge.bg-danger Hủy
                                 td.text-end
-                                    a(
-                                        href="javascript:;"
-                                        button-api
-                                        data-method="PATCH"
-                                        data-api=`/${pathAdmin}/booking/undo/${item.contactId}/${item._id}`
-                                        class="me-1"
-                                        style="font-size: 20px"
-                                        )
-                                        i.las.la-undo.text-info.font-16.me-1
-                                    a(
-                                        href="javascript:;"
-                                        button-api
-                                        data-method="DELETE"
-                                        data-api=`/${pathAdmin}/booking/destroy/${item.contactId}/${item._id}`
-                                        style="font-size: 20px"
-                                        )
-                                        i.las.la-trash-alt.text-danger.font-16
+                                  a(
+                                    href="javascript:;"
+                                    button-api
+                                    data-method="PATCH"
+                                    data-api=`/${pathAdmin}/booking/undo/${item._id}`
+                                    class="me-1"
+                                    style="font-size: 20px"
+                                  )
+                                    i.las.la-undo.text-info.font-16.me-1
+                                  a(
+                                    href="javascript:;"
+                                    button-api
+                                    data-method="DELETE"
+                                    data-api=`/${pathAdmin}/booking/destroy/${item._id}`
+                                    style="font-size: 20px"
+                                  )
+                                    i.las.la-trash-alt.text-danger.font-16
                         else
                             tr
                                 td(colspan="6" class="text-center") Không tìm thấy dữ liệu

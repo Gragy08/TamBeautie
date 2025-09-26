@@ -55,12 +55,12 @@ block main
                 href=`/${pathAdmin}/booking/list/trash/${contactDetail._id}`
                 )
                 i.las.la-trash-alt.me-1
-                | Thùng rác Lịch khám
+                | Thùng rác Đơn khám
               a.btn.btn-primary(
                 href=`/${pathAdmin}/booking/create/${contactDetail._id}`
                 )
                 i.fa-solid.fa-plus.me-1
-                | Tạo Lịch khám mới
+                | Tạo Đơn khám mới
           // end row
         // end card-header
         .card-body.pt-0
@@ -89,8 +89,8 @@ block main
                   th Tổng đơn khám
                   th Trạng thái
                   th.text-end Hành động
-              tbody
-                if(bookingList.length > 0)
+              if(bookingList.length > 0)
+                tbody
                   each item, index in bookingList
                     tr
                       td #{pagination.skip + index + 1}
@@ -125,18 +125,19 @@ block main
                           span.badge.bg-danger Hủy
                       td.text-end
                         a(href=`/${pathAdmin}/booking/view/${contactDetail._id}/${item._id}` style="font-size: 20px")
-                            i.las.la-eye.text-info.font-16.me-1
-                        a(href=`/${pathAdmin}/booking/edit/${contactDetail._id}/${item._id}` style="font-size: 20px")
-                            i.las.la-pen.text-warning.font-16.me-1
+                          i.las.la-eye.text-info.font-16.me-1
+                        a(href=`/${pathAdmin}/booking/edit/${item._id}` style="font-size: 20px")
+                          i.las.la-pen.text-warning.font-16.me-1
                         a(
-                            href="javascript:;"
-                            button-api
-                            data-method="PATCH"
-                            data-api=`/${pathAdmin}/booking/delete/${contactDetail._id}/${item._id}`
-                            style="font-size: 20px"
-                            )
-                            i.las.la-trash-alt.text-danger.font-16
-                else
+                          href="javascript:;"
+                          button-api
+                          data-method="PATCH"
+                          data-api=`/${pathAdmin}/booking/delete/${item._id}`
+                          style="font-size: 20px"
+                          )
+                          i.las.la-trash-alt.text-danger.font-16
+              else
+                tbody
                   tr
                     td(colspan="6" class="text-center") Không tìm thấy dữ liệu
           .row.mt-3

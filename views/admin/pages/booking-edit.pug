@@ -9,7 +9,7 @@ block main
             | #{pageTitle} của 
             span(style="color: #e83e8c") #{contactDetail.fullName}
     .card-body.pt-0
-      form#bookingEditForm
+  form#bookingEditForm(action=`/${pathAdmin}/booking/edit/${bookingDetail._id}` method="post")
         .row
           .col-md-6.col-lg-6.d-none
             .mb-3

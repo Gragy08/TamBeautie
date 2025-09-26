@@ -1,4 +1,5 @@
 const Contact = require("../../models/contact.model");
+const Booking = require("../../models/booking.model");
 const slugify = require("slugify");
 const moment = require("moment");
 const { pathAdmin } = require('../../config/variable');
@@ -37,6 +38,11 @@ module.exports.contact = async (req, res) => {
 
   const recordList = await Contact
     .find(find)
+    .populate({
+      path: 'bookings',
+      match: { deleted: false },
+      options: { sort: { date: -1 } }
+    })
     .sort({
       createdAt: "desc"
     })
@@ -47,7 +53,7 @@ module.exports.contact = async (req, res) => {
   const formattedRecords = recordList.map(item => {
     return {
       ...item._doc, // copy các field gốc
-      dob: item.dob ? moment(item.dob).format("DD/MM/YYYY") : "" // format ngày
+      dob: item.dob ? moment(item.dob).format("DD/MM/YYYY") : ""
     };
   });
 
@@ -236,50 +242,38 @@ module.exports.destroyContactDelete = async (req, res) => {
 module.exports.view = async (req, res) => {
   try {
     const id = req.params.id;
-
-    const contactDetail = await Contact.findOne({
-      _id: id,
-      deleted: false
-    })
-
-    if(!contactDetail) {
+    const contactDetail = await Contact.findOne({ _id: id, deleted: false });
+    if (!contactDetail) {
       res.redirect(`/${pathAdmin}/contact/list`);
       return;
     }
-
-    // Format lại ngày sinh để hiện đúng trong <input type="date">
-    const contactObj = contactDetail.toObject(); 
+    const contactObj = contactDetail.toObject();
     if (contactObj.dob) {
       contactObj.dobFormatted = moment(contactObj.dob).format("YYYY-MM-DD");
     }
-
-    // Lấy danh sách booking có deleted = false
-    let bookingList = (contactObj.bookings || []).filter(item => item.deleted === false);
-
+    // Lấy danh sách booking từ bảng Booking
+    let bookingQuery = { idCustomer: contactObj._id, deleted: false };
+    let bookingList = await Booking.find(bookingQuery);
     // Nếu có keyword, lọc theo tên dịch vụ hoặc trường search
     if (req.query.keyword) {
       const keyword = req.query.keyword.toLowerCase();
       bookingList = bookingList.filter(item =>
-        (item.name && item.name.toLowerCase().includes(keyword)) ||
         (item.search && item.search.toLowerCase().includes(keyword))
       );
     }
-
     // Sắp xếp bookingList theo ngày giảm dần (desc)
     bookingList = bookingList.sort((a, b) => {
       const dateA = a.date ? new Date(a.date) : new Date(0);
       const dateB = b.date ? new Date(b.date) : new Date(0);
       return dateB - dateA;
     });
-
     // Format lại trường date
     bookingList = bookingList.map(item => ({
-      ...item,
+      ...item.toObject(),
       dateFormatted: item.date ? moment(item.date).format("YYYY-MM-DD") : ""
     }));
-
     // Phân trang bookingList
-    const limitItems = 5; // Số item mỗi trang
+    const limitItems = 5;
     let page = 1;
     if (req.query.page && parseInt(req.query.page) > 0) {
       page = parseInt(req.query.page);
@@ -288,19 +282,18 @@ module.exports.view = async (req, res) => {
     const totalPage = Math.ceil(totalRecord / limitItems);
     const skip = (page - 1) * limitItems;
     const pagination = {
-      totalRecord: totalRecord,
-      totalPage: totalPage,
-      page: page,
-      limitItems: limitItems,
-      skip: skip
+      totalRecord,
+      totalPage,
+      page,
+      limitItems,
+      skip
     };
     const pagedBookingList = bookingList.slice(skip, skip + limitItems);
-
     res.render("admin/pages/contact-view", {
       pageTitle: "Xem chi tiết khách hàng",
       contactDetail: contactObj,
       bookingList: pagedBookingList,
-      pagination: pagination
+      pagination
     });
   } catch (error) {
     res.redirect(`/${pathAdmin}/contact/list`);

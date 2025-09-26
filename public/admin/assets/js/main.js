@@ -576,7 +576,7 @@ if(bookingEditForm) {
       formData.append("status", status);
       formData.append("description", description);
 
-      fetch(`/${pathAdmin}/booking/edit/${id_customer}/${id_booking}`, {
+  fetch(`/${pathAdmin}/booking/edit/${id_booking}`, {
         method: "POST",
         body: formData
       })

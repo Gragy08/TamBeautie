@@ -59,7 +59,7 @@ block main
                       td #{item.phone}
                       td #{item.dob}
                       td
-                        if latestBooking
+                        if latestBooking && latestBooking.services && latestBooking.services.length
                           ul(style="list-style: none; padding: 0; margin: 0;")
                             each service in latestBooking.services
                               li #{service.name}

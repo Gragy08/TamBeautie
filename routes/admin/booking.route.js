@@ -4,34 +4,36 @@ const upload = multer();
 
 const bookingController = require("../../controller/admin/booking.controller")
 
+// List all bookings
 router.get('/list', bookingController.booking)
 
+// Create booking (needs contactId)
 router.get('/create/:id', bookingController.create)
-router.post(
-    '/create/:id',
-    upload.none(),
-    bookingController.createPost,
-)
+router.post('/create/:id', upload.none(), bookingController.createPost)
 
-router.get('/edit/:id/:bookingId', bookingController.edit)
-router.post(
-    '/edit/:id/:bookingId',
-    upload.none(),
-    bookingController.editPatch,
-)
+// Edit booking (only bookingId needed)
+router.get('/edit/:bookingId', bookingController.edit)
+router.post('/edit/:bookingId', upload.none(), bookingController.editPatch)
 
-router.get('/list/trash/:id', bookingController.trashCustomerBooking)
-
+// Trash list (all deleted bookings)
 router.get('/list/trashList', bookingController.trashList)
 
-router.patch('/delete/:id/:bookingId', bookingController.deleteBookingPatch);
+// Trash list for a specific patient
+router.get('/list/trash/:id', bookingController.trashCustomerBooking)
 
-router.patch('/undo/:id/:bookingId', bookingController.undoBookingPatch);
+// Delete booking (soft delete)
+router.patch('/delete/:bookingId', bookingController.deleteBookingPatch)
 
-router.delete('/destroy/:id/:bookingId', bookingController.destroyBookingDelete);
+// Undo delete booking
+router.patch('/undo/:bookingId', bookingController.undoBookingPatch)
 
-router.patch('/bulk-status', bookingController.bulkStatusPatch);
+// Destroy booking (permanent delete)
+router.delete('/destroy/:bookingId', bookingController.destroyBookingDelete)
 
+// Bulk status update
+router.patch('/bulk-status', bookingController.bulkStatusPatch)
+
+// View booking (needs contactId and bookingId)
 router.get('/view/:id/:bookingId', bookingController.view)
 
 module.exports = router;

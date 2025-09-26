@@ -51,14 +51,14 @@ block main
                                     ul.mb-0.list-unstyled
                                       each sv in item.services
                                         li #{sv.unit}
-                                td #{item.dateFormatted}
+                                td #{item.formatedDate}
                                 td
                                   if item.services && item.services.length > 0
                                     ul.mb-0.list-unstyled
                                       each sv in item.services
                                         li #{sv.price}
                                 td  #{item.promotion}
-                                td  #{item.depostion}
+                                td  #{item.deposit}
                                 td #{item.pay}
                                 td #{item.total}
                                 td
@@ -71,23 +71,23 @@ block main
                                     else if (item.status == "cancel")
                                         span.badge.bg-danger Hủy
                                 td.text-end
-                                    a(
-                                        href="javascript:;"
-                                        button-api
-                                        data-method="PATCH"
-                                        data-api=`/${pathAdmin}/booking/undo/${contactDetail._id}/${item._id}`
-                                        class="me-1"
-                                        style="font-size: 20px"
-                                        )
-                                        i.las.la-undo.text-info.font-16.me-1
-                                    a(
-                                        href="javascript:;"
-                                        button-api
-                                        data-method="DELETE"
-                                        data-api=`/${pathAdmin}/booking/destroy/${contactDetail._id}/${item._id}`
-                                        style="font-size: 20px"
-                                        )
-                                        i.las.la-trash-alt.text-danger.font-16
+                                  a(
+                                    href="javascript:;"
+                                    button-api
+                                    data-method="PATCH"
+                                    data-api=`/${pathAdmin}/booking/undo/${item._id}`
+                                    class="me-1"
+                                    style="font-size: 20px"
+                                  )
+                                    i.las.la-undo.text-info.font-16.me-1
+                                  a(
+                                    href="javascript:;"
+                                    button-api
+                                    data-method="DELETE"
+                                    data-api=`/${pathAdmin}/booking/destroy/${item._id}`
+                                    style="font-size: 20px"
+                                  )
+                                    i.las.la-trash-alt.text-danger.font-16
                         else
                             tr
                                 td(colspan="6" class="text-center") Không tìm thấy dữ liệu
