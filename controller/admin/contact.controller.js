@@ -152,7 +152,7 @@ module.exports.editContactPatch = async (req, res) => {
   try {
     const id = req.params.id;
 
-    req.body.search = slugify(`${req.body.fullName}`, {
+    req.body.search = slugify(`${req.body.phone}`, {
       replacement: " ",
       lower: true
     });

@@ -10,8 +10,12 @@ module.exports.booking = async (req, res) => {
   let filter = { deleted: false };
   if (req.query.keyword) {
     const keyword = req.query.keyword.toLowerCase();
+    // Tìm kiếm theo search của booking hoặc search của khách hàng
+    // Lấy danh sách contact có search match
+    const contactIds = (await Contact.find({ search: { $regex: keyword, $options: "i" } }, '_id')).map(c => c._id);
     filter.$or = [
       { search: { $regex: keyword, $options: "i" } },
+      { idCustomer: { $in: contactIds } }
     ];
   }
   let allBookings = await Booking.find(filter).populate('idCustomer');

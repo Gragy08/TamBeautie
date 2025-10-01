@@ -614,7 +614,9 @@ if (bulkStatusBtn && bulkStatusSelect) {
   bulkStatusBtn.addEventListener("click", async function() {
     const status = bulkStatusSelect.value;
     if (!status) {
-      alert("Vui lòng chọn trạng thái!");
+      drawNotify("error", "Vui lòng chọn trạng thái!");
+      // alert("Vui lòng chọn trạng thái!");
+      location.reload();
       return;
     }
     // Lấy các booking đã chọn
@@ -622,7 +624,9 @@ if (bulkStatusBtn && bulkStatusSelect) {
       .map(cb => cb.value);
 
     if (checkedIds.length === 0) {
-      alert("Vui lòng chọn ít nhất một đơn khám!");
+      drawNotify("error", "Vui lòng chọn ít nhất một đơn khám!");
+      // alert("Vui lòng chọn ít nhất một đơn khám!");
+      location.reload();
       return;
     }
 
