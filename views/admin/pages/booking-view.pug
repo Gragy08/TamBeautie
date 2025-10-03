@@ -88,7 +88,9 @@ block main
               label.form-label(for="status") Trạng thái
               select.form-select(name="status" id="status" disabled)
                 option(value="unsuccess" selected=(bookingDetail.status=="unsuccess")) Chưa Hoàn thành
-                option(value="success" selected=(bookingDetail.status=="success")) Hoàn thành
+                option(value="transferred" selected=(bookingDetail.status=="transferred")) Đã chuyển khoản
+                option(value="cash" selected=(bookingDetail.status=="cash")) Đã tiền mặt
+                option(value="debt" selected=(bookingDetail.status=="debt")) Công nợ
                 option(value="guarantee" selected=(bookingDetail.status=="guarantee")) Bảo hành
                 option(value="cancel" selected=(bookingDetail.status=="cancel")) Hủy
           .col-md-12.col-lg-12

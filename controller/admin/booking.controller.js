@@ -252,6 +252,7 @@ module.exports.editPatch = async (req, res) => {
     res.json({ code: "success", message: "Cập nhật đơn khám thành công!" });
   } catch (error) {
     res.json({ code: "error", message: "Có lỗi xảy ra!" });
+    console.log(error);
   }
 };
 

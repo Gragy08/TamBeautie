@@ -20,7 +20,7 @@ const bookingSchema = new mongoose.Schema({
   date: Date,
   status: {
     type: String,
-    enum: ["success", "unsuccess", "guarantee", "cancel"],
+    enum: ["transferred", "cash", "dept", "unsuccess", "guarantee", "cancel"],
     default: "unsuccess"
   },
   description: String,

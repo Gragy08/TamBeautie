@@ -30,9 +30,10 @@ block main
             .col-lg-6
               .input-group.mb-3
                 select.form-select(name="bulk-status" style="width: 160px;")
-                  option(value="") -- Đổi trạng thái --
-                  option(value="success") Hoàn thành
-                  option(value="unsuccess") Chưa hoàn thành
+                  option(value="unsuccess") Chưa Hoàn thành
+                  option(value="transferred") Đã Chuyển khoản
+                  option(value="cash") Đã Tiền mặt
+                  option(value="debt") Công nợ
                   option(value="guarantee") Bảo hành
                   option(value="cancel") Hủy
                 button.btn.btn-primary(type="button" id="bulk-status-confirm") Xác nhận
@@ -87,14 +88,18 @@ block main
                         td #{item.pay}
                         td #{item.total}
                         td
-                          if (item.status == "success")
-                            span.badge.bg-success Hoàn thành
-                          if (item.status == "unsuccess")
-                            span.badge.bg-secondary Chưa Hoàn thành
+                          if (item.status == "transferred")
+                            span.badge.bg-success Đã chuyển khoản
+                          else if (item.status == "cash")
+                            span.badge.bg-info Đã tiền mặt
+                          else if (item.status == "debt")
+                            span.badge.bg-danger Công nợ
                           else if (item.status == "guarantee")
                             span.badge.bg-warning Bảo hành
+                          else if (item.status == "unsuccess")
+                            span.badge.bg-secondary Chưa hoàn thành
                           else if (item.status == "cancel")
-                            span.badge.bg-danger Hủy
+                            span.badge.bg-dark Hủy
                         td.text-end
                           a(href=`/${pathAdmin}/booking/view/${item.contactId}/${item._id}` style="font-size: 20px")
                             i.las.la-eye.text-info.font-16.me-1

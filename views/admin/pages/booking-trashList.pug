@@ -64,14 +64,18 @@ block main
                                 td #{item.pay}
                                 td #{item.total}
                                 td
-                                    if (item.status == "success")
-                                        span.badge.bg-success Hoàn thành
-                                    if (item.status == "unsuccess")
-                                        span.badge.bg-secondary Chưa Hoàn thành
-                                    else if (item.status == "guarantee")
-                                        span.badge.bg-warning Bảo hành
-                                    else if (item.status == "cancel")
-                                        span.badge.bg-danger Hủy
+                                  if (item.status == "transferred")
+                                    span.badge.bg-success Đã chuyển khoản
+                                  else if (item.status == "cash")
+                                    span.badge.bg-info Đã tiền mặt
+                                  else if (item.status == "debt")
+                                    span.badge.bg-danger Công nợ
+                                  else if (item.status == "guarantee")
+                                    span.badge.bg-warning Bảo hành
+                                  else if (item.status == "unsuccess")
+                                    span.badge.bg-secondary Chưa hoàn thành
+                                  else if (item.status == "cancel")
+                                    span.badge.bg-dark Hủy
                                 td.text-end
                                   a(
                                     href="javascript:;"
